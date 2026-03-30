@@ -9,6 +9,7 @@ import {
   type PageIntroContent,
   type SiteContent,
 } from "../lib/site-data";
+import { WeblineLogo } from "./webline-logo";
 
 export { SiteHeader } from "./site-header";
 
@@ -18,43 +19,48 @@ export function SiteFooter({ contactEmail }: { contactEmail: string }) {
       <div className="shell footer-grid">
         <div>
           <Link className="brand footer-brand" href="/">
-            RUNOK
+            <WeblineLogo className="brand-logo brand-logo--footer" footer />
           </Link>
           <p>
-            A high-end design agency focusing on premium digital experiences and
-            editorial precision.
+            Azərbaycanda və ondan kənarda müasir məhsullar, veb-saytlar və
+            böyümə yönümlü təcrübələr hazırlayan rəqəmsal agentlik.
           </p>
           <div className="social-row">
-            <a href={`mailto:${contactEmail}`} aria-label="Email">
-              @
+            <a href="https://facebook.com" aria-label="Facebook">
+              f
+            </a>
+            <a href="https://instagram.com" aria-label="Instagram">
+              i
+            </a>
+            <a href="https://linkedin.com" aria-label="LinkedIn">
+              in
             </a>
             <Link href="/" aria-label="Website">
-              O
+              x
             </Link>
           </div>
         </div>
         <div className="footer-links">
-          <h4>Explore</h4>
+          <h4>Xidmətlər</h4>
           {navItems.map((item) => (
             <Link key={item.href} href={item.href}>
               {item.label}
             </Link>
           ))}
         </div>
-        <div className="footer-newsletter">
-          <h4>Newsletter</h4>
-          <p>Subscribe to our weekly editorial digest.</p>
-          <div className="newsletter-row">
-            <input type="email" placeholder="Email Address" />
-            <button type="button">Join</button>
-          </div>
+        <div className="footer-links">
+          <h4>Əlaqə</h4>
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+          <a href="tel:+994123456789">+994 12 345 67 89</a>
+          <a href="tel:+994501234567">+994 50 123 45 67</a>
+          <span>Bakı, Azərbaycan</span>
         </div>
       </div>
       <div className="shell footer-bottom">
-        <div>Copyright 2024 RUNOK Agency. All rights reserved.</div>
+        <div>© 2026 Webline. Bütün hüquqlar qorunur.</div>
         <div className="footer-policy">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
+          <a href="#">Gizlilik siyasəti</a>
+          <a href="#">İstifadə şərtləri</a>
         </div>
       </div>
     </footer>

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import { navItems } from "../lib/site-data";
+import { WeblineLogo } from "./webline-logo";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -44,7 +45,7 @@ export function SiteHeader() {
     <header className="topbar">
       <nav className="shell nav" aria-label="Primary">
         <Link className="brand" href="/">
-          RUNOK
+          <WeblineLogo className="brand-logo" />
         </Link>
 
         <div className="nav-links">
@@ -60,9 +61,11 @@ export function SiteHeader() {
         </div>
 
         <div className="nav-actions">
-          <Link className="button button-primary button-small nav-cta" href="/contact">
-            Get in Touch
-          </Link>
+          <div className="nav-utility" aria-hidden="true">
+            <span>AZ</span>
+            <span>•</span>
+            <span>☾</span>
+          </div>
           <button
             aria-controls="mobile-menu"
             aria-expanded={menuOpen}
@@ -92,7 +95,7 @@ export function SiteHeader() {
       >
         <div className="shell nav-panel__inner">
           <div className="nav-panel__top">
-            <p className="nav-panel__eyebrow">Navigation</p>
+            <WeblineLogo className="brand-logo" />
             <button
               aria-label="Close menu"
               className="nav-close"
@@ -122,18 +125,18 @@ export function SiteHeader() {
 
           <div className="nav-panel__footer">
             <div className="nav-panel__contact">
-              <span>Contact</span>
-              <a href="mailto:hello@runok.agency">hello@runok.agency</a>
+              <span>Əlaqə</span>
+              <a href="mailto:info@webline.az">info@webline.az</a>
               <a href="tel:+994505551212">+994 50 555 12 12</a>
             </div>
             <div className="nav-panel__meta">
-              Editorial-grade design systems, product execution, and modern
-              frontend delivery.
+              Veb saytlar, məhsul dizaynı və performans yönümlü rəqəmsal
+              təcrübələr.
             </div>
           </div>
 
           <Link className="button button-primary nav-panel__cta" href="/contact">
-            Get in Touch
+            Layihəyə Başla
           </Link>
         </div>
       </div>

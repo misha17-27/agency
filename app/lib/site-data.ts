@@ -73,12 +73,11 @@ export type SiteContent = {
 };
 
 export const navItems: NavItem[] = [
-  { label: "Services", href: "/services" },
-  { label: "Process", href: "/process" },
-  { label: "About", href: "/about" },
   { label: "Portfolio", href: "/portfolio" },
-  { label: "FAQ", href: "/faq" },
-  { label: "Contact", href: "/contact" },
+  { label: "Partnyorlar", href: "/process" },
+  { label: "Xidmətlər", href: "/services" },
+  { label: "Haqqımızda", href: "/about" },
+  { label: "Əlaqə", href: "/contact" },
 ];
 
 export const fallbackInsights: InsightItem[] = [

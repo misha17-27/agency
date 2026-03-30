@@ -1,13 +1,12 @@
 {
-  "name": "agency",
+  "name": "weblinenew",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "wp:serve": "php -S localhost:8090 -t wordpress/public wordpress/router.php"
+    "lint": "next lint"
   },
   "dependencies": {
     "next": "^15.5.13",
