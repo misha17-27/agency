@@ -1,135 +1,154 @@
-import Link from "next/link";
-import {
-  PageIntro,
-  SiteFooter,
-  SiteHeader,
-} from "../components/site-sections";
+import { ContactOfficeTabs, type ContactOffice } from "../components/contact-office-tabs";
+import { SiteFooter, SiteHeader } from "../components/site-sections";
 import { getSiteContent } from "../lib/wordpress";
 
 export default async function ContactPage() {
   const siteContent = await getSiteContent();
-  const contactDetails = [
+
+  const offices: ContactOffice[] = [
     {
-      label: "Email",
-      value: siteContent.contact.email,
-      href: `mailto:${siteContent.contact.email}`,
+      city: "Bakı",
+      country: "Azərbaycan",
+      address: "Heydər Əliyev prospekti 5",
+      phone: siteContent.contact.phone,
+      email: siteContent.contact.email,
+      mapUrl: siteContent.contact.mapUrl,
+      embedUrl: siteContent.contact.embedUrl,
     },
     {
-      label: "Phone",
-      value: siteContent.contact.phone,
-      href: `tel:${siteContent.contact.phone.replace(/\s+/g, "")}`,
+      city: "Berlin",
+      country: "Almaniya",
+      address: "Naugarder Strasse 46, 10409",
+      phone: "+49 176 75552813",
+      email: "info@thewebline.com",
+      mapUrl: "https://maps.google.com/?q=Naugarder+Strasse+46,+10409+Berlin",
+      embedUrl:
+        "https://www.google.com/maps?q=Naugarder+Strasse+46,+10409+Berlin&z=13&output=embed",
     },
     {
-      label: "Office",
-      value: siteContent.contact.office,
-      href: siteContent.contact.mapUrl,
+      city: "Vyana",
+      country: "Avstriya",
+      address: "A-1110, Simmeringer Hauptstr.26IB",
+      phone: "+43 660 8600035",
+      email: "info@thewebline.com",
+      mapUrl:
+        "https://maps.google.com/?q=Simmeringer+Hauptstrasse+26,+1110+Vienna",
+      embedUrl:
+        "https://www.google.com/maps?q=Simmeringer+Hauptstrasse+26,+1110+Vienna&z=13&output=embed",
+    },
+    {
+      city: "Budapeşt",
+      country: "Macarıstan",
+      address: "1051, Széchenyi István tér 7-8",
+      phone: "+36 30 336 6884",
+      email: "info@thewebline.com",
+      mapUrl:
+        "https://maps.google.com/?q=Szechenyi+Istvan+ter+7-8,+1051+Budapest",
+      embedUrl:
+        "https://www.google.com/maps?q=Szechenyi+Istvan+ter+7-8,+1051+Budapest&z=13&output=embed",
     },
   ];
 
   return (
     <main className="page-shell">
       <SiteHeader />
-      <PageIntro {...siteContent.pageIntros.contact} />
 
-      <section className="section">
-        <div className="shell contact-layout">
-          <div className="contact-panel">
-            <span className="eyebrow">Contact details</span>
-            <h2>{siteContent.contact.panelTitle}</h2>
-            <p>{siteContent.contact.panelDescription}</p>
-
-            <div className="contact-list">
-              {contactDetails.map((item) => (
-                <div className="contact-item" key={item.label}>
-                  <span>{item.label}</span>
-                  <a href={item.href}>{item.value}</a>
-                </div>
-              ))}
-            </div>
-
-            <div className="contact-note">
-              <strong>{siteContent.contact.responseTitle}</strong>
-              <p>{siteContent.contact.responseText}</p>
-            </div>
-          </div>
-
-          <form className="contact-form">
-            <div className="contact-form-body">
-              <div className="form-grid">
-                <label className="field">
-                  <span>Name</span>
-                  <input type="text" placeholder="Your name" />
-                </label>
-                <label className="field">
-                  <span>Email</span>
-                  <input type="email" placeholder="name@company.com" />
-                </label>
-              </div>
-
-              <div className="form-grid">
-                <label className="field">
-                  <span>Company</span>
-                  <input type="text" placeholder="Company name" />
-                </label>
-                <label className="field">
-                  <span>Budget</span>
-                  <select defaultValue="Select range">
-                    <option disabled>Select range</option>
-                    <option>$5k - $15k</option>
-                    <option>$15k - $40k</option>
-                    <option>$40k+</option>
-                  </select>
-                </label>
-              </div>
-
-              <label className="field field-grow">
-                <span>Project brief</span>
-                <textarea
-                  rows={7}
-                  placeholder="Describe the problem, goals, timeline, and what you need from RUNOK."
-                />
-              </label>
-            </div>
-
-            <div className="contact-actions">
-              <button className="button button-primary" type="submit">
-                Send Inquiry
-              </button>
-              <Link className="button button-outline" href="/services">
-                Review Services
-              </Link>
-            </div>
-          </form>
-        </div>
+      <section className="contact-hero shell">
+        <span className="eyebrow">
+          {siteContent.pageIntros.contact.eyebrow || "Contact"}
+        </span>
+        <h1>Bizimlə əlaqə saxlayın</h1>
+        <p>
+          Layihəniz haqqında bizə yazın. Komandamız ən qısa zamanda sizinlə
+          əlaqə saxlayacaq.
+        </p>
       </section>
 
-      <section className="section section-muted">
-        <div className="shell">
-          <div className="map-card">
-            <div className="map-card__header">
-              <div>
-                <span className="eyebrow">Office map</span>
-                <h2>{siteContent.contact.mapHeading}</h2>
-              </div>
-              <a
-                className="button button-outline"
-                href={siteContent.contact.mapUrl}
-                rel="noreferrer"
-                target="_blank"
-              >
-                Open in Maps
-              </a>
-            </div>
+      <ContactOfficeTabs offices={offices} />
 
-            <div className="map-frame">
-              <iframe
-                title="RUNOK office map"
-                src={siteContent.contact.embedUrl}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+      <section className="section contact-form-section">
+        <div className="shell contact-story-layout">
+          <div className="contact-story">
+            <h2>
+              Layihəniz haqqında
+              <br />
+              <em>danışaq</em>
+            </h2>
+            <p>
+              Formu doldurun, komandamız ən qısa zamanda sizinlə əlaqə
+              saxlayacaq.
+            </p>
+
+            <div className="contact-story-list">
+              <div className="contact-story-item">
+                <div className="contact-story-item__icon" aria-hidden="true">
+                  <span />
+                </div>
+                <div>
+                  <small>Email</small>
+                  <a href={`mailto:${siteContent.contact.email}`}>
+                    {siteContent.contact.email}
+                  </a>
+                </div>
+              </div>
+
+              <div className="contact-story-item">
+                <div className="contact-story-item__icon" aria-hidden="true">
+                  <span />
+                </div>
+                <div>
+                  <small>Telefon</small>
+                  <a href={`tel:${siteContent.contact.phone.replace(/\s+/g, "")}`}>
+                    {siteContent.contact.phone}
+                  </a>
+                </div>
+              </div>
+
+              <div className="contact-story-item">
+                <div className="contact-story-item__icon" aria-hidden="true">
+                  <span />
+                </div>
+                <div>
+                  <small>Ünvan</small>
+                  <strong>{offices[0].address}</strong>
+                  <span>
+                    {offices[0].city}, {offices[0].country}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
+
+          <form className="contact-modern-form">
+            <label className="field">
+              <span>Ad Soyad</span>
+              <input type="text" placeholder="Ad və soyadınız" />
+            </label>
+
+            <label className="field">
+              <span>Email</span>
+              <input type="email" placeholder="email@example.com" />
+            </label>
+
+            <label className="field">
+              <span>Telefon (İstəyə bağlı)</span>
+              <input type="tel" placeholder="+994 XX XXX XX XX" />
+            </label>
+
+            <label className="field field-textarea">
+              <span>Mesaj</span>
+              <textarea
+                rows={8}
+                placeholder="Layihəniz haqqında bizə yazın..."
+              />
+            </label>
+
+            <div className="contact-modern-form__actions">
+              <button className="button button-accent" type="submit">
+                Göndər <span className="arrow">-&gt;</span>
+              </button>
+            </div>
+          </form>
         </div>
       </section>
 
