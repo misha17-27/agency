@@ -24,13 +24,15 @@ export default async function ProcessPage() {
           </div>
 
           <div className="partner-logo-grid">
-            {partners.map((partner) => (
+            {partners.map((partner, index) => (
               <article className="partner-logo-card" key={partner.title}>
                 <Image
                   src={partner.image}
                   alt={partner.title}
                   width={360}
                   height={226}
+                  sizes="(max-width: 760px) 100vw, (max-width: 1080px) 50vw, 25vw"
+                  priority={index < 2}
                 />
               </article>
             ))}
