@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { PageIntro, SiteFooter, SiteHeader } from "../components/site-sections";
+import { SiteFooter, SiteHeader } from "../components/site-sections";
 import { getPartners, getSiteContent } from "../lib/wordpress";
 
 export default async function ProcessPage() {
@@ -9,7 +9,6 @@ export default async function ProcessPage() {
   return (
     <main className="page-shell">
       <SiteHeader />
-      <PageIntro {...siteContent.pageIntros.process} />
 
       <section className="section partner-logos-section">
         <div className="shell">
