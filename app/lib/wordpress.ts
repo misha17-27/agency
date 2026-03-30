@@ -67,6 +67,11 @@ export async function getSiteContent(): Promise<SiteContent> {
     return fallbackSiteContent;
   }
 
+  const cmsServiceItems =
+    data.services?.items && data.services.items.length >= 6
+      ? data.services.items
+      : fallbackSiteContent.services.items;
+
   return {
     ...fallbackSiteContent,
     ...data,
@@ -77,7 +82,7 @@ export async function getSiteContent(): Promise<SiteContent> {
     services: {
       ...fallbackSiteContent.services,
       ...data.services,
-      items: data.services?.items ?? fallbackSiteContent.services.items,
+      items: cmsServiceItems,
     },
     about: {
       ...fallbackSiteContent.about,

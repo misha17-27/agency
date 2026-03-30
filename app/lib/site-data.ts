@@ -128,33 +128,86 @@ export const fallbackSiteContent: SiteContent = {
       "We create high-end editorial digital experiences that redefine how brands connect with their audience. Precise, bold, and unapologetically modern.",
   },
   services: {
-    heading: "Our Core Services",
+    heading: "Xidmətlər",
     intro:
-      "Tailored solutions that merge technical excellence with visual storytelling.",
+      "Saytların hazırlanması, proqram təminatı və rəqəmsal dəstək xidmətləri bir sistem kimi planlanır və həyata keçirilir.",
     items: [
       {
-        icon: "Brand",
-        title: "Designing",
+        icon: "01",
+        title: "Saytların hazırlanması",
         description:
-          "Visual identities that command attention and define industry standards.",
+          "Biz internetdə biznesinizi düzgün təmsil edən və sizə qazanc gətirən vebsaytlar yaradırıq.",
+        items: [
+          "Online mağaza",
+          "Korporativ saytlar",
+          "Xidmət saytları",
+          "Elan saytları",
+          "Turizm saytları və s.",
+        ],
       },
       {
-        icon: "Code",
-        title: "Development",
+        icon: "02",
+        title: "Proqramların hazırlanması",
         description:
-          "Robust architecture built with modern frameworks for ultimate speed.",
+          "Biznesinizin və müştərilərinizin rahatlığı üçün proqramlar və həllər təklif edirik.",
+        items: [
+          "Mobile app (iOS & Android)",
+          "B2B proqramlar",
+          "B2C proqramlar",
+          "Desktop proqramlar",
+          "Satış və anbar proqramları",
+        ],
       },
       {
-        icon: "UX",
-        title: "User Experience",
+        icon: "03",
+        title: "Rəqəmsal marketinq",
         description:
-          "Intuitive journeys crafted through psychological research and testing.",
+          "Sosial şəbəkələrdə və axtarış sistemlərində ön sıralarda olmaq üçün strateji rəqəmsal marketinq həlləri təqdim edirik.",
+        items: [
+          "SEO & Google Ads",
+          "Facebook & Instagram (SMM)",
+          "TikTok",
+          "Kopiraytinq & kontent",
+          "Foto & video çəkiliş",
+        ],
       },
       {
-        icon: "Mobile",
-        title: "Mobile Solution",
+        icon: "04",
+        title: "Dizayn xidmətləri",
         description:
-          "Native-feeling web applications optimized for every screen size.",
+          "Yaratdığımız dizaynların estetik və funksional baxımdan güclü görünməsi üçün işləyirik.",
+        items: [
+          "Logo dizaynı",
+          "Brandbook dizaynı",
+          "Kataloq dizaynı",
+          "Qrafik videolar",
+          "3D dizayn",
+        ],
+      },
+      {
+        icon: "05",
+        title: "Texniki dəstək",
+        description:
+          "Hazırladığımız saytların inkişafı və davamlı işləməsi üçün texniki dəstək göstəririk.",
+        items: [
+          "Saytlara texniki dəstək",
+          "Saytların idarə olunması",
+          "Server xidmətləri",
+          "Hostinq xidmətləri",
+        ],
+      },
+      {
+        icon: "06",
+        title: "İşinizə faydalı",
+        description:
+          "Biznesinizi düzgün təhlil edir, satışlarınızı və xidmət keyfiyyətini gücləndirməyə kömək edirik.",
+        items: [
+          "Data analizi",
+          "Konsultasiya",
+          "Korporativ email",
+          "Google Business qeydiyyatı",
+          "Avtobusda reklam",
+        ],
       },
     ],
   },
