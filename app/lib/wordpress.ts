@@ -2,6 +2,7 @@ import {
   fallbackInsights,
   fallbackSiteContent,
   type InsightItem,
+  type PartnerItem,
   type SiteContent,
 } from "./site-data";
 
@@ -146,4 +147,21 @@ export async function getInsights(): Promise<InsightItem[]> {
       alt,
     };
   });
+}
+
+export async function getPartners(): Promise<PartnerItem[]> {
+  const partners = await safeFetch<PartnerItem[]>("/runok/v1/partners");
+
+  if (partners?.length) {
+    return partners.filter((item) => item.image);
+  }
+
+  return [
+    { title: "Part 01", image: "https://webline.az/wp-content/uploads/2024/02/Part-01.jpg" },
+    { title: "Part 02", image: "https://webline.az/wp-content/uploads/2024/02/Part-02.jpg" },
+    { title: "Part 03", image: "https://webline.az/wp-content/uploads/2024/02/Part-03.jpg" },
+    { title: "Part 04", image: "https://webline.az/wp-content/uploads/2024/02/Part-04.jpg" },
+    { title: "Part 05", image: "https://webline.az/wp-content/uploads/2024/02/Part-05.jpg" },
+    { title: "Part 06", image: "https://webline.az/wp-content/uploads/2024/02/Part-06.jpg" },
+  ];
 }

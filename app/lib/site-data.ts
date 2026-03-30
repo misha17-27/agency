@@ -9,6 +9,7 @@ export type SectionItem = {
   title: string;
   description: string;
   highlighted?: boolean;
+  items?: string[];
 };
 
 export type FaqItem = {
@@ -24,6 +25,11 @@ export type InsightItem = {
   description: string;
   image: string;
   alt: string;
+};
+
+export type PartnerItem = {
+  title: string;
+  image: string;
 };
 
 export type PageIntroContent = {

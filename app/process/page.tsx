@@ -1,24 +1,10 @@
 import Image from "next/image";
 import { PageIntro, SiteFooter, SiteHeader } from "../components/site-sections";
-import { getSiteContent } from "../lib/wordpress";
-
-const partnerLogos = [
-  "https://webline.az/wp-content/uploads/2024/02/Part-01.jpg",
-  "https://webline.az/wp-content/uploads/2024/02/Part-02.jpg",
-  "https://webline.az/wp-content/uploads/2024/02/Part-03.jpg",
-  "https://webline.az/wp-content/uploads/2024/02/Part-04.jpg",
-  "https://webline.az/wp-content/uploads/2024/02/Part-05.jpg",
-  "https://webline.az/wp-content/uploads/2024/02/Part-06.jpg",
-  "https://webline.az/wp-content/uploads/2024/02/Part-07.jpg",
-  "https://webline.az/wp-content/uploads/2024/02/Part-08.jpg",
-  "https://webline.az/wp-content/uploads/2024/02/Part-09.jpg",
-  "https://webline.az/wp-content/uploads/2024/02/Part-10.jpg",
-  "https://webline.az/wp-content/uploads/2024/02/Part-11.jpg",
-  "https://webline.az/wp-content/uploads/2024/06/partnyorlar-01.jpg",
-];
+import { getPartners, getSiteContent } from "../lib/wordpress";
 
 export default async function ProcessPage() {
   const siteContent = await getSiteContent();
+  const partners = await getPartners();
 
   return (
     <main className="page-shell">
@@ -39,11 +25,11 @@ export default async function ProcessPage() {
           </div>
 
           <div className="partner-logo-grid">
-            {partnerLogos.map((logo, index) => (
-              <article className="partner-logo-card" key={logo}>
+            {partners.map((partner) => (
+              <article className="partner-logo-card" key={partner.title}>
                 <Image
-                  src={logo}
-                  alt={`Partner logo ${index + 1}`}
+                  src={partner.image}
+                  alt={partner.title}
                   width={360}
                   height={226}
                 />
