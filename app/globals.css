@@ -1655,7 +1655,7 @@ html[data-theme="dark"] .project-card--light {
   display: flex;
   flex-direction: column;
   min-height: 16rem;
-  padding: 1.5rem;
+  overflow: hidden;
   color: var(--text);
   text-decoration: none;
   transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
@@ -1665,6 +1665,19 @@ html[data-theme="dark"] .project-card--light {
   transform: translateY(-6px);
   border-color: rgba(201, 156, 18, 0.28);
   box-shadow: 0 24px 60px rgba(18, 26, 45, 0.08);
+}
+
+.portfolio-category-card__preview {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.portfolio-category-card__preview img,
+.portfolio-category-showcase img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .portfolio-category-card__icon,
@@ -1677,18 +1690,33 @@ html[data-theme="dark"] .project-card--light {
   border-radius: 1.1rem;
   background: rgba(245, 202, 44, 0.16);
   color: var(--primary);
-  font-size: 1.7rem;
+  font-size: 1rem;
   font-weight: 700;
 }
 
+.portfolio-category-card__icon {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  backdrop-filter: blur(8px);
+}
+
 .portfolio-category-card__body {
-  margin-top: 2rem;
+  padding: 1.35rem 1.35rem 0;
 }
 
 .portfolio-category-card__body h2 {
   margin: 0;
   font-size: 1.9rem;
   letter-spacing: -0.05em;
+}
+
+.portfolio-category-card__body small {
+  display: inline-block;
+  margin-top: 0.95rem;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 700;
 }
 
 .portfolio-category-card__body p,
@@ -1706,7 +1734,7 @@ html[data-theme="dark"] .project-card--light {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding-top: 2rem;
+  padding: 1.3rem 1.35rem 1.35rem;
   font-size: 0.74rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1739,14 +1767,53 @@ html[data-theme="dark"] .project-card--light {
 }
 
 .portfolio-category-hero {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(22rem, 34rem);
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
   margin-top: 2rem;
+}
+
+.portfolio-category-hero__copy {
+  max-width: 38rem;
 }
 
 .portfolio-category-hero__copy h1 {
   margin-top: 0;
+}
+
+.portfolio-category-showcase {
+  position: relative;
+  overflow: hidden;
+  min-height: 22rem;
+  border-radius: 1.6rem;
+  border: 1px solid rgba(22, 28, 45, 0.08);
+  box-shadow: 0 18px 50px rgba(18, 26, 45, 0.05);
+}
+
+.portfolio-category-showcase__meta {
+  position: absolute;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  left: 1.2rem;
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+}
+
+.portfolio-category-showcase__meta span {
+  color: var(--primary);
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.portfolio-category-showcase__meta strong {
+  font-size: 1.2rem;
+  letter-spacing: -0.04em;
 }
 
 .portfolio-category-tabs {
@@ -1825,13 +1892,18 @@ html[data-theme="dark"] .project-card--light {
 
 html[data-theme="dark"] .portfolio-category-card,
 html[data-theme="dark"] .portfolio-project-card,
-html[data-theme="dark"] .portfolio-empty-state {
+html[data-theme="dark"] .portfolio-empty-state,
+html[data-theme="dark"] .portfolio-category-showcase {
   background: rgba(255, 255, 255, 0.03);
   border-color: rgba(255, 255, 255, 0.08);
 }
 
 html[data-theme="dark"] .portfolio-category-card__arrow {
   background: rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="dark"] .portfolio-category-showcase__meta {
+  background: rgba(15, 16, 20, 0.76);
 }
 
 .contact-layout {
@@ -2335,6 +2407,11 @@ html[data-theme="dark"] .office-map-link {
     flex-direction: column;
   }
 
+  .portfolio-category-showcase {
+    width: 100%;
+    max-width: 42rem;
+  }
+
   .section-heading.split {
     align-items: flex-start;
     flex-direction: column;
@@ -2589,11 +2666,11 @@ html[data-theme="dark"] .office-map-link {
 
   .portfolio-category-card {
     min-height: 14.5rem;
-    padding: 1.2rem;
   }
 
   .portfolio-category-card__body {
     margin-top: 1.4rem;
+    padding: 1.1rem 1.1rem 0;
   }
 
   .portfolio-category-card__body h2 {
@@ -2601,7 +2678,7 @@ html[data-theme="dark"] .office-map-link {
   }
 
   .portfolio-category-card__footer {
-    padding-top: 1.6rem;
+    padding: 1.2rem 1.1rem 1.1rem;
   }
 
   .portfolio-breadcrumb {

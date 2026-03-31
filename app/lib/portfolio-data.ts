@@ -14,6 +14,9 @@ export type PortfolioCategoryCard = {
   title: string;
   description: string;
   shortLabel: string;
+  image: string;
+  alt: string;
+  featuredTitle: string;
 };
 
 export type PortfolioProject = {
@@ -394,7 +397,8 @@ const portfolioContent: Record<LocaleCode, PortfolioDictionary> = {
 
 export function getPortfolioCategories(locale: LocaleCode): PortfolioCategoryCard[] {
   const dictionary = portfolioContent[locale] ?? portfolioContent.az;
-  const projectCountByCategory = dictionary.projects.reduce<Record<string, number>>(
+  const projects = getPortfolioProjects(locale);
+  const projectCountByCategory = projects.reduce<Record<string, number>>(
     (accumulator, project) => {
       accumulator[project.category] = (accumulator[project.category] ?? 0) + 1;
       return accumulator;
@@ -402,12 +406,20 @@ export function getPortfolioCategories(locale: LocaleCode): PortfolioCategoryCar
     {}
   );
 
-  return portfolioCategorySlugs.map((slug) => ({
-    slug,
-    title: dictionary.categories[slug].title,
-    description: dictionary.categories[slug].description,
-    shortLabel: `${projectCountByCategory[slug] ?? 0} ${dictionary.projectCountLabel}`,
-  }));
+  return portfolioCategorySlugs.map((slug) => {
+    const previewProject =
+      projects.find((project) => project.category === slug) ?? projects[0];
+
+    return {
+      slug,
+      title: dictionary.categories[slug].title,
+      description: dictionary.categories[slug].description,
+      shortLabel: `${projectCountByCategory[slug] ?? 0} ${dictionary.projectCountLabel}`,
+      image: previewProject.image,
+      alt: previewProject.alt,
+      featuredTitle: previewProject.title,
+    };
+  });
 }
 
 export function getPortfolioProjects(locale: LocaleCode) {

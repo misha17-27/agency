@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   CtaStrip,
@@ -30,23 +31,33 @@ export default async function PortfolioPage() {
         </div>
 
         <div className="portfolio-category-grid" aria-label={pageCopy.categoriesLabel}>
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <Link
               key={category.slug}
               href={localizeHref(`/portfolio/${category.slug}`, locale)}
               className="portfolio-category-card"
             >
-              <div className="portfolio-category-card__icon" aria-hidden="true">
-                ↗
+              <div className="portfolio-category-card__preview">
+                <Image
+                  src={category.image}
+                  alt={category.alt}
+                  width={700}
+                  height={520}
+                  sizes="(max-width: 760px) 100vw, (max-width: 1080px) 50vw, 25vw"
+                />
+                <div className="portfolio-category-card__icon" aria-hidden="true">
+                  {(index + 1).toString().padStart(2, "0")}
+                </div>
               </div>
               <div className="portfolio-category-card__body">
                 <h2>{category.title}</h2>
                 <p>{category.description}</p>
+                <small>{category.featuredTitle}</small>
               </div>
               <div className="portfolio-category-card__footer">
                 <span>{category.shortLabel}</span>
                 <span className="portfolio-category-card__arrow" aria-hidden="true">
-                  →
+                  -&gt;
                 </span>
               </div>
             </Link>

@@ -45,6 +45,7 @@ export default async function PortfolioCategoryPage({
   const projects = getPortfolioProjects(locale).filter(
     (project) => project.category === category
   );
+  const featuredProject = projects[0];
 
   return (
     <main className="page-shell">
@@ -53,38 +54,50 @@ export default async function PortfolioCategoryPage({
       <section className="portfolio-category-page shell">
         <nav className="portfolio-breadcrumb" aria-label="Breadcrumb">
           <Link href={localizeHref("/portfolio", locale)}>{pageCopy.breadcrumbRoot}</Link>
-          <span aria-hidden="true">›</span>
+          <span aria-hidden="true">&gt;</span>
           <span>{categoryCopy.title}</span>
         </nav>
 
         <div className="portfolio-category-hero">
-          <div className="portfolio-category-hero__icon" aria-hidden="true">
-            ↗
-          </div>
           <div className="portfolio-category-hero__copy">
+            <div className="portfolio-category-hero__icon" aria-hidden="true">
+              01
+            </div>
             <h1>{categoryCopy.title}</h1>
             <p>{categoryCopy.description}</p>
           </div>
+
+          {featuredProject ? (
+            <div className="portfolio-category-showcase">
+              <Image
+                src={featuredProject.image}
+                alt={featuredProject.alt}
+                width={960}
+                height={720}
+                sizes="(max-width: 1080px) 100vw, 42vw"
+              />
+              <div className="portfolio-category-showcase__meta">
+                <span>{featuredProject.badge}</span>
+                <strong>{featuredProject.title}</strong>
+              </div>
+            </div>
+          ) : null}
         </div>
 
         <div className="portfolio-category-tabs" aria-label={pageCopy.categoriesLabel}>
-          {categories.map((item) => {
-            const href = localizeHref(`/portfolio/${item.slug}`, locale);
-
-            return (
-              <Link
-                key={item.slug}
-                href={href}
-                className={
-                  item.slug === category
-                    ? "portfolio-category-tabs__item is-active"
-                    : "portfolio-category-tabs__item"
-                }
-              >
-                {item.title}
-              </Link>
-            );
-          })}
+          {categories.map((item) => (
+            <Link
+              key={item.slug}
+              href={localizeHref(`/portfolio/${item.slug}`, locale)}
+              className={
+                item.slug === category
+                  ? "portfolio-category-tabs__item is-active"
+                  : "portfolio-category-tabs__item"
+              }
+            >
+              {item.title}
+            </Link>
+          ))}
         </div>
 
         {projects.length ? (
