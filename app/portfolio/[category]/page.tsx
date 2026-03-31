@@ -113,7 +113,11 @@ export default async function PortfolioCategoryPage({
         {projects.length ? (
           <div className="portfolio-project-grid">
             {projects.map((project) => (
-              <article className="portfolio-project-card" key={project.slug}>
+              <Link
+                key={project.slug}
+                href={localizeHref(`/portfolio/${category}/${project.slug}`, locale)}
+                className="portfolio-project-card portfolio-project-card--link"
+              >
                 <div className="portfolio-project-card__image">
                   <Image
                     src={project.image}
@@ -128,7 +132,7 @@ export default async function PortfolioCategoryPage({
                   <h2>{project.title}</h2>
                   <p>{project.description}</p>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         ) : (
