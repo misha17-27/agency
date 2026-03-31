@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Webline Headless CMS
  * Description: Headless WordPress configuration for the Webline Next.js frontend.
- * Version: 1.5.0
+ * Version: 1.6.0
  * Author: Misha17-27
  */
 
@@ -17,6 +17,7 @@ const WEBLINE_SERVICE_META_ITEMS = '_webline_service_items';
 const WEBLINE_FAQ_META_OPEN = '_webline_faq_open';
 const WEBLINE_FAQ_META_ORDER = '_webline_faq_order';
 const WEBLINE_PORTFOLIO_META_CATEGORY = '_webline_portfolio_category';
+const WEBLINE_PORTFOLIO_META_CATEGORY_SLUG = '_webline_portfolio_category_slug';
 const WEBLINE_PORTFOLIO_META_DATE = '_webline_portfolio_date';
 const WEBLINE_PORTFOLIO_META_IMAGE = '_webline_portfolio_image';
 const WEBLINE_PARTNER_META_ORDER = '_webline_partner_order';
@@ -31,6 +32,7 @@ const WEBLINE_SEEDED_OPTION = 'webline_headless_seeded';
 const WEBLINE_COLLECTION_SEEDED_OPTION = 'webline_headless_collection_seeded';
 const WEBLINE_SERVICE_SYNC_OPTION = 'webline_headless_service_sync_v120';
 const WEBLINE_OFFICE_SYNC_OPTION = 'webline_headless_office_sync_v150';
+const WEBLINE_PORTFOLIO_SYNC_OPTION = 'webline_headless_portfolio_sync_v160';
 
 function webline_normalize_lang(?string $lang): string
 {
@@ -247,9 +249,20 @@ function webline_render_faq_meta(WP_Post $post): void
 function webline_render_portfolio_meta(WP_Post $post): void
 {
     wp_nonce_field('webline_portfolio_meta', 'webline_portfolio_meta_nonce');
+    $categorySlug = (string) get_post_meta($post->ID, WEBLINE_PORTFOLIO_META_CATEGORY_SLUG, true);
     ?>
     <p>
-        <label for="webline_portfolio_category"><strong>Category</strong></label><br>
+        <label for="webline_portfolio_category_slug"><strong>Category group</strong></label><br>
+        <select class="widefat" id="webline_portfolio_category_slug" name="webline_portfolio_category_slug">
+            <?php foreach (webline_portfolio_category_definitions() as $slug => $definition) : ?>
+                <option value="<?php echo esc_attr($slug); ?>" <?php selected($categorySlug ?: 'saytlar', $slug); ?>>
+                    <?php echo esc_html($definition['title']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </p>
+    <p>
+        <label for="webline_portfolio_category"><strong>Badge label</strong></label><br>
         <input type="text" class="widefat" id="webline_portfolio_category" name="webline_portfolio_category" value="<?php echo esc_attr((string) get_post_meta($post->ID, WEBLINE_PORTFOLIO_META_CATEGORY, true)); ?>">
     </p>
     <p>
@@ -335,6 +348,7 @@ function webline_save_meta_boxes(int $postId): void
     }
 
     if ($postType === 'webline_portfolio' && isset($_POST['webline_portfolio_meta_nonce']) && wp_verify_nonce($_POST['webline_portfolio_meta_nonce'], 'webline_portfolio_meta')) {
+        update_post_meta($postId, WEBLINE_PORTFOLIO_META_CATEGORY_SLUG, sanitize_key($_POST['webline_portfolio_category_slug'] ?? 'saytlar'));
         update_post_meta($postId, WEBLINE_PORTFOLIO_META_CATEGORY, sanitize_text_field($_POST['webline_portfolio_category'] ?? ''));
         update_post_meta($postId, WEBLINE_PORTFOLIO_META_DATE, sanitize_text_field($_POST['webline_portfolio_date'] ?? ''));
         update_post_meta($postId, WEBLINE_PORTFOLIO_META_IMAGE, esc_url_raw($_POST['webline_portfolio_image'] ?? ''));
@@ -432,6 +446,28 @@ function webline_intro_fields(string $prefix): array
     ];
 }
 
+function webline_portfolio_category_definitions(): array
+{
+    return [
+        'saytlar' => [
+            'title' => 'Saytlar',
+            'description' => 'website haqqında',
+        ],
+        'dizaynlar' => [
+            'title' => 'Dizaynlar',
+            'description' => 'Dizayn işlərimiz',
+        ],
+        'sosial-media' => [
+            'title' => 'Sosial media',
+            'description' => 'SMM kampaniyaları',
+        ],
+        'video-reels' => [
+            'title' => 'Video reels',
+            'description' => 'Qısa video işlərimiz',
+        ],
+    ];
+}
+
 function webline_register_acf_groups(): void
 {
     if (!function_exists('acf_add_local_field_group')) {
@@ -493,7 +529,16 @@ function webline_register_acf_groups(): void
     acf_add_local_field_group([
         'key' => 'group_webline_portfolio',
         'title' => 'Webline Portfolio Content',
-        'fields' => webline_intro_fields('portfolio'),
+        'fields' => array_merge(webline_intro_fields('portfolio'), [
+            ['key' => 'field_portfolio_category_saytlar_title', 'label' => 'Saytlar Title', 'name' => 'category_saytlar_title', 'type' => 'text'],
+            ['key' => 'field_portfolio_category_saytlar_description', 'label' => 'Saytlar Description', 'name' => 'category_saytlar_description', 'type' => 'text'],
+            ['key' => 'field_portfolio_category_dizaynlar_title', 'label' => 'Dizaynlar Title', 'name' => 'category_dizaynlar_title', 'type' => 'text'],
+            ['key' => 'field_portfolio_category_dizaynlar_description', 'label' => 'Dizaynlar Description', 'name' => 'category_dizaynlar_description', 'type' => 'text'],
+            ['key' => 'field_portfolio_category_sosial_media_title', 'label' => 'Sosial media Title', 'name' => 'category_sosial_media_title', 'type' => 'text'],
+            ['key' => 'field_portfolio_category_sosial_media_description', 'label' => 'Sosial media Description', 'name' => 'category_sosial_media_description', 'type' => 'text'],
+            ['key' => 'field_portfolio_category_video_reels_title', 'label' => 'Video reels Title', 'name' => 'category_video_reels_title', 'type' => 'text'],
+            ['key' => 'field_portfolio_category_video_reels_description', 'label' => 'Video reels Description', 'name' => 'category_video_reels_description', 'type' => 'text'],
+        ]),
         'location' => webline_page_location('portfolio'),
     ]);
 
@@ -957,6 +1002,58 @@ function webline_sync_offices_v150(): void
 }
 add_action('admin_init', 'webline_sync_offices_v150');
 
+function webline_infer_portfolio_category_slug(string $title, string $badge, int $index = 0): string
+{
+    $haystack = strtolower($title . ' ' . $badge);
+
+    if (str_contains($haystack, 'design') || str_contains($haystack, 'dizayn') || str_contains($haystack, 'brand')) {
+        return 'dizaynlar';
+    }
+
+    if (str_contains($haystack, 'social') || str_contains($haystack, 'media') || str_contains($haystack, 'smm')) {
+        return 'sosial-media';
+    }
+
+    if (str_contains($haystack, 'video') || str_contains($haystack, 'reel') || str_contains($haystack, 'motion')) {
+        return 'video-reels';
+    }
+
+    $fallbackOrder = ['saytlar', 'dizaynlar', 'sosial-media', 'video-reels'];
+    return $fallbackOrder[$index % count($fallbackOrder)];
+}
+
+function webline_sync_portfolio_v160(): void
+{
+    if (get_option(WEBLINE_PORTFOLIO_SYNC_OPTION) === '1') {
+        return;
+    }
+
+    $posts = get_posts([
+        'post_type' => 'webline_portfolio',
+        'post_status' => ['publish', 'draft', 'pending', 'private'],
+        'posts_per_page' => -1,
+        'orderby' => ['date' => 'ASC'],
+    ]);
+
+    foreach ($posts as $index => $post) {
+        $existingSlug = (string) get_post_meta($post->ID, WEBLINE_PORTFOLIO_META_CATEGORY_SLUG, true);
+
+        if ($existingSlug !== '') {
+            continue;
+        }
+
+        $badge = (string) get_post_meta($post->ID, WEBLINE_PORTFOLIO_META_CATEGORY, true);
+        update_post_meta(
+            $post->ID,
+            WEBLINE_PORTFOLIO_META_CATEGORY_SLUG,
+            webline_infer_portfolio_category_slug($post->post_title, $badge, (int) $index)
+        );
+    }
+
+    update_option(WEBLINE_PORTFOLIO_SYNC_OPTION, '1');
+}
+add_action('admin_init', 'webline_sync_portfolio_v160');
+
 function webline_get_frontend_page_url(WP_Post $post): string
 {
     $slug = $post->post_name ?: '';
@@ -1042,9 +1139,15 @@ function webline_get_portfolio_data(?string $lang = null): array
 
         return array_map(static function (WP_Post $post) {
             $image = get_the_post_thumbnail_url($post, 'large') ?: get_post_meta($post->ID, WEBLINE_PORTFOLIO_META_IMAGE, true);
+            $categorySlug = (string) get_post_meta($post->ID, WEBLINE_PORTFOLIO_META_CATEGORY_SLUG, true);
+            $categorySlug = $categorySlug ?: 'saytlar';
+            $badge = (string) get_post_meta($post->ID, WEBLINE_PORTFOLIO_META_CATEGORY, true);
 
             return [
-                'category' => get_post_meta($post->ID, WEBLINE_PORTFOLIO_META_CATEGORY, true) ?: 'Portfolio',
+                'slug' => $post->post_name ?: 'portfolio-' . $post->ID,
+                'category' => $badge ?: 'Portfolio',
+                'categorySlug' => $categorySlug,
+                'badge' => $badge ?: 'Portfolio',
                 'date' => get_post_meta($post->ID, WEBLINE_PORTFOLIO_META_DATE, true) ?: mysql2date('F j, Y', $post->post_date),
                 'title' => $post->post_title,
                 'description' => $post->post_excerpt ?: wp_strip_all_tags($post->post_content),
@@ -1102,6 +1205,24 @@ function webline_get_office_data(?string $lang = null): array
     });
 }
 
+function webline_get_portfolio_category_data(?string $lang = null): array
+{
+    return webline_with_lang($lang, static function () {
+        $categories = [];
+
+        foreach (webline_portfolio_category_definitions() as $slug => $definition) {
+            $fieldKey = str_replace('-', '_', $slug);
+            $categories[] = [
+                'slug' => $slug,
+                'title' => webline_get_field_value('portfolio', 'category_' . $fieldKey . '_title', $definition['title']),
+                'description' => webline_get_field_value('portfolio', 'category_' . $fieldKey . '_description', $definition['description']),
+            ];
+        }
+
+        return $categories;
+    });
+}
+
 function webline_build_settings_payload(?string $lang = null): array
 {
     return webline_with_lang($lang, static function () {
@@ -1151,6 +1272,7 @@ function webline_build_settings_payload(?string $lang = null): array
                 'responseText' => webline_get_field_value('contact', 'response_text', ''),
                 'mapHeading' => webline_get_field_value('contact', 'map_heading', 'Find the studio in Baku.'),
             ],
+            'portfolioCategories' => webline_get_portfolio_category_data($lang),
             'offices' => webline_get_office_data($lang),
             'pageIntros' => [
                 'services' => ['eyebrow' => webline_get_field_value('services', 'intro_eyebrow', 'Services'), 'title' => webline_get_field_value('services', 'intro_title', ''), 'description' => webline_get_field_value('services', 'intro_description', '')],
@@ -1197,6 +1319,17 @@ function webline_revalidate_paths_for_post(WP_Post $post): array
     if ($post->post_type === 'page') {
         $slug = $post->post_name ?: 'home';
         return [$slug === 'home' ? '/' : '/' . $slug];
+    }
+
+    if ($post->post_type === 'webline_portfolio') {
+        $categorySlug = (string) get_post_meta($post->ID, WEBLINE_PORTFOLIO_META_CATEGORY_SLUG, true);
+        $paths = ['/', '/portfolio'];
+
+        if ($categorySlug !== '') {
+            $paths[] = '/portfolio/' . ltrim($categorySlug, '/');
+        }
+
+        return array_values(array_unique($paths));
     }
 
     return ['/', '/services', '/process', '/about', '/portfolio', '/faq', '/contact'];

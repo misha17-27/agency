@@ -7,16 +7,16 @@ import {
   SiteHeader,
 } from "../../components/site-sections";
 import {
+  fallbackPortfolioProjects,
   getPortfolioCategories,
   getPortfolioCategory,
   getPortfolioPageCopy,
-  getPortfolioProjects,
   portfolioCategorySlugs,
   type PortfolioCategorySlug,
 } from "../../lib/portfolio-data";
 import { localizeHref } from "../../lib/locale";
 import { getCurrentLocale } from "../../lib/request-locale";
-import { getSiteContent } from "../../lib/wordpress";
+import { getPortfolioProjects, getSiteContent } from "../../lib/wordpress";
 
 function isPortfolioCategory(value: string): value is PortfolioCategorySlug {
   return portfolioCategorySlugs.includes(value as PortfolioCategorySlug);
@@ -38,11 +38,23 @@ export default async function PortfolioCategoryPage({
   }
 
   const locale = await getCurrentLocale();
-  const [siteContent] = await Promise.all([getSiteContent(locale)]);
+  const [siteContent, cmsProjects] = await Promise.all([
+    getSiteContent(locale),
+    getPortfolioProjects(locale),
+  ]);
   const pageCopy = getPortfolioPageCopy(locale);
-  const categoryCopy = getPortfolioCategory(locale, category);
-  const categories = getPortfolioCategories(locale);
-  const projects = getPortfolioProjects(locale).filter(
+  const portfolioProjects = cmsProjects.length ? cmsProjects : fallbackPortfolioProjects;
+  const categoryCopy = getPortfolioCategory(
+    locale,
+    category,
+    siteContent.portfolioCategories
+  );
+  const categories = getPortfolioCategories(
+    locale,
+    siteContent.portfolioCategories,
+    portfolioProjects
+  );
+  const projects = portfolioProjects.filter(
     (project) => project.category === category
   );
   const featuredProject = projects[0];

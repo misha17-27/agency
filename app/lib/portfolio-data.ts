@@ -1,4 +1,8 @@
 import type { LocaleCode } from "./locale";
+import {
+  fallbackSiteContent,
+  type PortfolioCategoryContent,
+} from "./site-data";
 
 export const portfolioCategorySlugs = [
   "saytlar",
@@ -395,9 +399,38 @@ const portfolioContent: Record<LocaleCode, PortfolioDictionary> = {
   },
 };
 
-export function getPortfolioCategories(locale: LocaleCode): PortfolioCategoryCard[] {
+export const fallbackPortfolioProjects: PortfolioProject[] =
+  portfolioContent.az.projects;
+
+function getCategoryContent(
+  locale: LocaleCode,
+  categories?: PortfolioCategoryContent[]
+): PortfolioCategoryContent[] {
   const dictionary = portfolioContent[locale] ?? portfolioContent.az;
-  const projects = getPortfolioProjects(locale);
+  const source =
+    categories?.length ? categories : fallbackSiteContent.portfolioCategories;
+
+  return portfolioCategorySlugs.map((slug) => {
+    const fallbackCategory = dictionary.categories[slug];
+    const matchedCategory = source.find((item) => item.slug === slug);
+
+    return {
+      slug,
+      title: matchedCategory?.title || fallbackCategory.title,
+      description: matchedCategory?.description || fallbackCategory.description,
+      shortLabel: matchedCategory?.shortLabel || fallbackCategory.shortLabel,
+    };
+  });
+}
+
+export function getPortfolioCategories(
+  locale: LocaleCode,
+  categories?: PortfolioCategoryContent[],
+  projectsInput?: PortfolioProject[]
+): PortfolioCategoryCard[] {
+  const dictionary = portfolioContent[locale] ?? portfolioContent.az;
+  const categoryContent = getCategoryContent(locale, categories);
+  const projects = projectsInput?.length ? projectsInput : getPortfolioProjects(locale);
   const projectCountByCategory = projects.reduce<Record<string, number>>(
     (accumulator, project) => {
       accumulator[project.category] = (accumulator[project.category] ?? 0) + 1;
@@ -409,11 +442,12 @@ export function getPortfolioCategories(locale: LocaleCode): PortfolioCategoryCar
   return portfolioCategorySlugs.map((slug) => {
     const previewProject =
       projects.find((project) => project.category === slug) ?? projects[0];
+    const category = categoryContent.find((item) => item.slug === slug);
 
     return {
       slug,
-      title: dictionary.categories[slug].title,
-      description: dictionary.categories[slug].description,
+      title: category?.title || dictionary.categories[slug].title,
+      description: category?.description || dictionary.categories[slug].description,
       shortLabel: `${projectCountByCategory[slug] ?? 0} ${dictionary.projectCountLabel}`,
       image: previewProject.image,
       alt: previewProject.alt,
@@ -432,9 +466,18 @@ export function getPortfolioProjects(locale: LocaleCode) {
   return portfolioContent.az.projects;
 }
 
-export function getPortfolioCategory(locale: LocaleCode, slug: PortfolioCategorySlug) {
+export function getPortfolioCategory(
+  locale: LocaleCode,
+  slug: PortfolioCategorySlug,
+  categories?: PortfolioCategoryContent[]
+) {
   const dictionary = portfolioContent[locale] ?? portfolioContent.az;
-  const category = dictionary.categories[slug];
+  const category =
+    getCategoryContent(locale, categories).find((item) => item.slug === slug) ?? {
+      slug,
+      title: dictionary.categories[slug].title,
+      description: dictionary.categories[slug].description,
+    };
 
   return {
     slug,

@@ -32,6 +32,13 @@ export type PartnerItem = {
   image: string;
 };
 
+export type PortfolioCategoryContent = {
+  slug: string;
+  title: string;
+  description: string;
+  shortLabel?: string;
+};
+
 export type ContactOffice = {
   city: string;
   country: string;
@@ -85,6 +92,7 @@ export type SiteContent = {
     responseText: string;
     mapHeading: string;
   };
+  portfolioCategories: PortfolioCategoryContent[];
   offices: ContactOffice[];
   pageIntros: Record<string, PageIntroContent>;
 };
@@ -293,6 +301,28 @@ export const fallbackSiteContent: SiteContent = {
     responseText: "Most inquiries get a reply within one business day.",
     mapHeading: "Find the studio in Baku.",
   },
+  portfolioCategories: [
+    {
+      slug: "saytlar",
+      title: "Saytlar",
+      description: "website haqqında",
+    },
+    {
+      slug: "dizaynlar",
+      title: "Dizaynlar",
+      description: "Dizayn işlərimiz",
+    },
+    {
+      slug: "sosial-media",
+      title: "Sosial media",
+      description: "SMM kampaniyaları",
+    },
+    {
+      slug: "video-reels",
+      title: "Video reels",
+      description: "Qısa video işlərimiz",
+    },
+  ],
   offices: [
     {
       city: "Bakı",

@@ -6,6 +6,7 @@ import {
   type SiteContent,
 } from "./site-data";
 import type { LocaleCode } from "./locale";
+import type { PortfolioProject } from "./portfolio-data";
 
 type WpRendered = {
   rendered: string;
@@ -25,6 +26,18 @@ type WpPost = {
     "wp:featuredmedia"?: WpMedia[];
     "wp:term"?: Array<Array<{ name: string }>>;
   };
+};
+
+type CmsPortfolioItem = {
+  slug?: string;
+  category?: string;
+  categorySlug?: string;
+  date?: string;
+  badge?: string;
+  title: string;
+  description: string;
+  image: string;
+  alt: string;
 };
 
 const apiBase =
@@ -112,6 +125,10 @@ export async function getSiteContent(locale?: LocaleCode): Promise<SiteContent> 
       ...fallbackSiteContent.contact,
       ...data.contact,
     },
+    portfolioCategories:
+      data.portfolioCategories?.length
+        ? data.portfolioCategories
+        : fallbackSiteContent.portfolioCategories,
     offices: data.offices?.length ? data.offices : fallbackSiteContent.offices,
     pageIntros: {
       ...fallbackSiteContent.pageIntros,
@@ -121,7 +138,7 @@ export async function getSiteContent(locale?: LocaleCode): Promise<SiteContent> 
 }
 
 export async function getInsights(locale?: LocaleCode): Promise<InsightItem[]> {
-  const portfolio = await safeFetch<InsightItem[]>("/runok/v1/portfolio", locale);
+  const portfolio = await safeFetch<CmsPortfolioItem[]>("/runok/v1/portfolio", locale);
 
   if (portfolio?.length) {
     return portfolio.map((item, index) => ({
@@ -163,6 +180,28 @@ export async function getInsights(locale?: LocaleCode): Promise<InsightItem[]> {
       alt,
     };
   });
+}
+
+export async function getPortfolioProjects(
+  locale?: LocaleCode
+): Promise<PortfolioProject[]> {
+  const portfolio = await safeFetch<CmsPortfolioItem[]>("/runok/v1/portfolio", locale);
+
+  if (!portfolio?.length) {
+    return [];
+  }
+
+  return portfolio
+    .filter((item) => item.image && item.title)
+    .map((item, index) => ({
+      slug: item.slug || `portfolio-${index + 1}`,
+      category: (item.categorySlug as PortfolioProject["category"]) || "saytlar",
+      badge: item.badge || item.category || "Portfolio",
+      title: item.title,
+      description: item.description,
+      image: item.image,
+      alt: item.alt || item.title,
+    }));
 }
 
 export async function getPartners(locale?: LocaleCode): Promise<PartnerItem[]> {

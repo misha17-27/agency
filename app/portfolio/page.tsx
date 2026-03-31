@@ -6,18 +6,27 @@ import {
   SiteHeader,
 } from "../components/site-sections";
 import {
+  fallbackPortfolioProjects,
   getPortfolioCategories,
   getPortfolioPageCopy,
 } from "../lib/portfolio-data";
 import { localizeHref } from "../lib/locale";
 import { getCurrentLocale } from "../lib/request-locale";
-import { getSiteContent } from "../lib/wordpress";
+import { getPortfolioProjects, getSiteContent } from "../lib/wordpress";
 
 export default async function PortfolioPage() {
   const locale = await getCurrentLocale();
-  const [siteContent] = await Promise.all([getSiteContent(locale)]);
+  const [siteContent, cmsProjects] = await Promise.all([
+    getSiteContent(locale),
+    getPortfolioProjects(locale),
+  ]);
   const pageCopy = getPortfolioPageCopy(locale);
-  const categories = getPortfolioCategories(locale);
+  const portfolioProjects = cmsProjects.length ? cmsProjects : fallbackPortfolioProjects;
+  const categories = getPortfolioCategories(
+    locale,
+    siteContent.portfolioCategories,
+    portfolioProjects
+  );
 
   return (
     <main className="page-shell">
