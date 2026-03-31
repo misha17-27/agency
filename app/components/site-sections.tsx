@@ -4,26 +4,44 @@ import {
   aboutImageOne,
   aboutImageTwo,
   heroImage,
-  navItems,
   type InsightItem,
   type PageIntroContent,
   type SiteContent,
 } from "../lib/site-data";
+import { getMessages } from "../lib/messages";
+import type { LocaleCode } from "../lib/locale";
 import { WeblineLogo } from "./webline-logo";
 
 export { SiteHeader } from "./site-header";
 
+function getNavItems(locale: LocaleCode) {
+  const t = getMessages(locale);
+
+  return [
+    { href: "/about", label: t.header.nav.about },
+    { href: "/portfolio", label: t.header.nav.portfolio },
+    { href: "/process", label: t.header.nav.partners },
+    { href: "/services", label: t.header.nav.services },
+    { href: "/contact", label: t.header.nav.contact },
+  ];
+}
+
 export function SiteFooter({
+  locale,
   contactEmail,
   contactPhone,
   contactOffice,
   description,
 }: {
+  locale: LocaleCode;
   contactEmail: string;
   contactPhone?: string;
   contactOffice?: string;
   description?: string;
 }) {
+  const t = getMessages(locale);
+  const navItems = getNavItems(locale);
+
   return (
     <footer className="footer">
       <div className="shell footer-grid">
@@ -31,10 +49,7 @@ export function SiteFooter({
           <Link className="brand footer-brand" href="/">
             <WeblineLogo className="brand-logo brand-logo--footer" footer />
           </Link>
-          <p>
-            {description ??
-              "Azərbaycanda və ondan kənarda müasir məhsullar, veb-saytlar və böyümə yönümlü təcrübələr hazırlayan rəqəmsal agentlik."}
-          </p>
+          <p>{description ?? t.footer.description}</p>
           <div className="social-row">
             <a href="https://facebook.com" aria-label="Facebook">
               f
@@ -51,7 +66,7 @@ export function SiteFooter({
           </div>
         </div>
         <div className="footer-links">
-          <h4>Xidmətlər</h4>
+          <h4>{t.footer.servicesTitle}</h4>
           {navItems.map((item) => (
             <Link key={item.href} href={item.href}>
               {item.label}
@@ -59,7 +74,7 @@ export function SiteFooter({
           ))}
         </div>
         <div className="footer-links">
-          <h4>Əlaqə</h4>
+          <h4>{t.footer.contactTitle}</h4>
           <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
           {contactPhone ? (
             <a href={`tel:${contactPhone.replace(/\s+/g, "")}`}>{contactPhone}</a>
@@ -68,10 +83,10 @@ export function SiteFooter({
         </div>
       </div>
       <div className="shell footer-bottom">
-        <div>© 2026 Webline. Bütün hüquqlar qorunur.</div>
+        <div>{t.footer.copyright}</div>
         <div className="footer-policy">
-          <a href="#">Gizlilik siyasəti</a>
-          <a href="#">İstifadə şərtləri</a>
+          <a href="#">{t.footer.privacy}</a>
+          <a href="#">{t.footer.terms}</a>
         </div>
       </div>
     </footer>
@@ -88,7 +103,15 @@ export function PageIntro({ eyebrow, title, description }: PageIntroContent) {
   );
 }
 
-export function HeroSection({ content }: { content: SiteContent["homeHero"] }) {
+export function HeroSection({
+  content,
+  locale,
+}: {
+  content: SiteContent["homeHero"];
+  locale: LocaleCode;
+}) {
+  const t = getMessages(locale);
+
   return (
     <section className="hero shell">
       <div className="hero-copy">
@@ -99,10 +122,10 @@ export function HeroSection({ content }: { content: SiteContent["homeHero"] }) {
         <p>{content.description}</p>
         <div className="hero-actions">
           <Link className="button button-primary" href="/contact">
-            Start Project
+            {t.home.startProject}
           </Link>
           <Link className="button button-ghost" href="/portfolio">
-            Our Portfolio <span className="arrow">-&gt;</span>
+            {t.home.ourWorks} <span className="arrow">-&gt;</span>
           </Link>
         </div>
       </div>
@@ -156,11 +179,15 @@ export function ServicesSection({
 
 export function AboutSection({
   content,
+  locale,
   eyebrow = "About",
 }: {
   content: SiteContent["about"];
+  locale: LocaleCode;
   eyebrow?: string;
 }) {
+  const t = getMessages(locale);
+
   return (
     <section className="section">
       <div className="shell about-grid">
@@ -199,7 +226,7 @@ export function AboutSection({
             ))}
           </ul>
           <Link className="button button-outline" href="/services">
-            Explore Services
+            {t.cta.reviewServices}
           </Link>
         </div>
       </div>
@@ -269,18 +296,22 @@ export function FaqSection({
 
 export function InsightsSection({
   posts,
+  locale,
   heading = "Latest Insights",
 }: {
   posts: InsightItem[];
+  locale: LocaleCode;
   heading?: string;
 }) {
+  const t = getMessages(locale);
+
   return (
     <section className="section section-insights">
       <div className="shell">
         <div className="section-heading split">
           <h2>{heading}</h2>
           <Link className="button button-link" href="/portfolio">
-            View All Posts <span className="arrow">-&gt;</span>
+            {t.portfolio.viewAllPosts} <span className="arrow">-&gt;</span>
           </Link>
         </div>
         <div className="insight-grid">
@@ -305,14 +336,18 @@ export function InsightsSection({
 }
 
 export function CtaStrip({
+  locale,
   eyebrow = "Contact",
   title,
   description,
 }: {
+  locale: LocaleCode;
   eyebrow?: string;
   title: string;
   description: string;
 }) {
+  const t = getMessages(locale);
+
   return (
     <section className="section">
       <div className="shell">
@@ -324,10 +359,10 @@ export function CtaStrip({
           </div>
           <div className="button-row">
             <Link className="button button-primary" href="/services">
-              Review Services
+              {t.cta.reviewServices}
             </Link>
             <Link className="button button-outline" href="/contact">
-              Contact Us
+              {t.cta.contactUs}
             </Link>
           </div>
         </div>

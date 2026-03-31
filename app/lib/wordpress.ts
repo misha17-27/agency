@@ -5,6 +5,7 @@ import {
   type PartnerItem,
   type SiteContent,
 } from "./site-data";
+import type { LocaleCode } from "./locale";
 
 type WpRendered = {
   rendered: string;
@@ -30,6 +31,14 @@ const apiBase =
   process.env.WORDPRESS_API_URL?.replace(/\/$/, "") ??
   "http://localhost:8090/wp-json";
 
+function appendLang(path: string, locale?: LocaleCode) {
+  if (!locale) {
+    return path;
+  }
+
+  return `${path}${path.includes("?") ? "&" : "?"}lang=${locale}`;
+}
+
 function buildApiUrl(path: string) {
   if (apiBase.includes("rest_route=")) {
     const [route, query = ""] = path.split("?");
@@ -44,9 +53,9 @@ function stripHtml(input: string) {
   return input.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 }
 
-async function safeFetch<T>(path: string): Promise<T | null> {
+async function safeFetch<T>(path: string, locale?: LocaleCode): Promise<T | null> {
   try {
-    const response = await fetch(buildApiUrl(path), {
+    const response = await fetch(buildApiUrl(appendLang(path, locale)), {
       next: { revalidate: 60 },
     });
 
@@ -60,8 +69,8 @@ async function safeFetch<T>(path: string): Promise<T | null> {
   }
 }
 
-export async function getSiteContent(): Promise<SiteContent> {
-  const data = await safeFetch<Partial<SiteContent>>("/runok/v1/settings");
+export async function getSiteContent(locale?: LocaleCode): Promise<SiteContent> {
+  const data = await safeFetch<Partial<SiteContent>>("/runok/v1/settings", locale);
 
   if (!data) {
     return fallbackSiteContent;
@@ -110,8 +119,8 @@ export async function getSiteContent(): Promise<SiteContent> {
   };
 }
 
-export async function getInsights(): Promise<InsightItem[]> {
-  const portfolio = await safeFetch<InsightItem[]>("/runok/v1/portfolio");
+export async function getInsights(locale?: LocaleCode): Promise<InsightItem[]> {
+  const portfolio = await safeFetch<InsightItem[]>("/runok/v1/portfolio", locale);
 
   if (portfolio?.length) {
     return portfolio.map((item, index) => ({
@@ -123,7 +132,8 @@ export async function getInsights(): Promise<InsightItem[]> {
   }
 
   const posts = await safeFetch<WpPost[]>(
-    "/wp/v2/posts?_embed&per_page=3&orderby=date&order=desc"
+    "/wp/v2/posts?_embed&per_page=3&orderby=date&order=desc",
+    locale
   );
 
   if (!posts?.length) {
@@ -154,8 +164,8 @@ export async function getInsights(): Promise<InsightItem[]> {
   });
 }
 
-export async function getPartners(): Promise<PartnerItem[]> {
-  const partners = await safeFetch<PartnerItem[]>("/runok/v1/partners");
+export async function getPartners(locale?: LocaleCode): Promise<PartnerItem[]> {
+  const partners = await safeFetch<PartnerItem[]>("/runok/v1/partners", locale);
 
   if (partners?.length) {
     return partners.filter((item) => item.image);

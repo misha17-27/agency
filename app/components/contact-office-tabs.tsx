@@ -12,7 +12,17 @@ export type ContactOffice = {
   embedUrl: string;
 };
 
-export function ContactOfficeTabs({ offices }: { offices: ContactOffice[] }) {
+export function ContactOfficeTabs({
+  offices,
+  heading,
+  mapEyebrow,
+  openMapLabel,
+}: {
+  offices: ContactOffice[];
+  heading: string;
+  mapEyebrow: string;
+  openMapLabel: string;
+}) {
   const [activeCity, setActiveCity] = useState(offices[0]?.city ?? "");
 
   const activeOffice = useMemo(
@@ -28,10 +38,10 @@ export function ContactOfficeTabs({ offices }: { offices: ContactOffice[] }) {
     <section className="section contact-offices-section">
       <div className="shell">
         <div className="contact-offices-heading">
-          <h2>Ofislərimiz</h2>
+          <h2>{heading}</h2>
         </div>
 
-        <div className="office-tabs" role="tablist" aria-label="Office locations">
+        <div className="office-tabs" role="tablist" aria-label={heading}>
           {offices.map((office) => {
             const isActive = office.city === activeOffice.city;
 
@@ -69,7 +79,7 @@ export function ContactOfficeTabs({ offices }: { offices: ContactOffice[] }) {
         >
           <div className="office-map-card__meta">
             <div>
-              <span className="eyebrow">Office Map</span>
+              <span className="eyebrow">{mapEyebrow}</span>
               <h3>{activeOffice.city}</h3>
               <p>
                 {activeOffice.address}
@@ -83,7 +93,7 @@ export function ContactOfficeTabs({ offices }: { offices: ContactOffice[] }) {
               target="_blank"
               rel="noreferrer"
             >
-              Xəritədə aç
+              {openMapLabel}
             </a>
           </div>
 

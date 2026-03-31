@@ -1,9 +1,13 @@
 import { ContactOfficeTabs, type ContactOffice } from "../components/contact-office-tabs";
 import { SiteFooter, SiteHeader } from "../components/site-sections";
+import { getMessages } from "../lib/messages";
+import { getCurrentLocale } from "../lib/request-locale";
 import { getSiteContent } from "../lib/wordpress";
 
 export default async function ContactPage() {
-  const siteContent = await getSiteContent();
+  const locale = await getCurrentLocale();
+  const t = getMessages(locale);
+  const siteContent = await getSiteContent(locale);
 
   const offices: ContactOffice[] = [
     {
@@ -31,8 +35,7 @@ export default async function ContactPage() {
       address: "A-1110, Simmeringer Hauptstr.26IB",
       phone: "+43 660 8600035",
       email: "info@thewebline.com",
-      mapUrl:
-        "https://maps.google.com/?q=Simmeringer+Hauptstrasse+26,+1110+Vienna",
+      mapUrl: "https://maps.google.com/?q=Simmeringer+Hauptstrasse+26,+1110+Vienna",
       embedUrl:
         "https://www.google.com/maps?q=Simmeringer+Hauptstrasse+26,+1110+Vienna&z=13&output=embed",
     },
@@ -42,42 +45,71 @@ export default async function ContactPage() {
       address: "1051, Széchenyi István tér 7-8",
       phone: "+36 30 336 6884",
       email: "info@thewebline.com",
-      mapUrl:
-        "https://maps.google.com/?q=Szechenyi+Istvan+ter+7-8,+1051+Budapest",
+      mapUrl: "https://maps.google.com/?q=Szechenyi+Istvan+ter+7-8,+1051+Budapest",
       embedUrl:
         "https://www.google.com/maps?q=Szechenyi+Istvan+ter+7-8,+1051+Budapest&z=13&output=embed",
     },
   ];
+
+  const officesHeading =
+    locale === "en"
+      ? "Our offices"
+      : locale === "ru"
+        ? "Наши офисы"
+        : locale === "de"
+          ? "Unsere Standorte"
+          : locale === "tr"
+            ? "Ofislerimiz"
+            : "Ofislərimiz";
+
+  const mapEyebrow =
+    locale === "en"
+      ? "Office map"
+      : locale === "ru"
+        ? "Карта офиса"
+        : locale === "de"
+          ? "Karte des Standorts"
+          : locale === "tr"
+            ? "Ofis haritası"
+            : "Ofis xəritəsi";
+
+  const openMapLabel =
+    locale === "en"
+      ? "Open in maps"
+      : locale === "ru"
+        ? "Открыть на карте"
+        : locale === "de"
+          ? "In Karten öffnen"
+          : locale === "tr"
+            ? "Haritada aç"
+            : "Xəritədə aç";
 
   return (
     <main className="page-shell">
       <SiteHeader />
 
       <section className="contact-hero shell">
-        <span className="eyebrow">
-          {siteContent.pageIntros.contact.eyebrow || "Contact"}
-        </span>
-        <h1>Bizimlə əlaqə saxlayın</h1>
-        <p>
-          Layihəniz haqqında bizə yazın. Komandamız ən qısa zamanda sizinlə
-          əlaqə saxlayacaq.
-        </p>
+        <span className="eyebrow">{siteContent.pageIntros.contact.eyebrow || "Contact"}</span>
+        <h1>{t.contact.heroTitle}</h1>
+        <p>{t.contact.heroDescription}</p>
       </section>
 
-      <ContactOfficeTabs offices={offices} />
+      <ContactOfficeTabs
+        offices={offices}
+        heading={officesHeading}
+        mapEyebrow={mapEyebrow}
+        openMapLabel={openMapLabel}
+      />
 
       <section className="section contact-form-section">
         <div className="shell contact-story-layout">
           <div className="contact-story">
             <h2>
-              Layihəniz haqqında
+              {t.contact.storyTitleStart}
               <br />
-              <em>danışaq</em>
+              <em>{t.contact.storyTitleAccent}</em>
             </h2>
-            <p>
-              Formu doldurun, komandamız ən qısa zamanda sizinlə əlaqə
-              saxlayacaq.
-            </p>
+            <p>{t.contact.storyDescription}</p>
 
             <div className="contact-story-list">
               <div className="contact-story-item">
@@ -85,10 +117,8 @@ export default async function ContactPage() {
                   <span />
                 </div>
                 <div>
-                  <small>Email</small>
-                  <a href={`mailto:${siteContent.contact.email}`}>
-                    {siteContent.contact.email}
-                  </a>
+                  <small>{t.contact.email}</small>
+                  <a href={`mailto:${siteContent.contact.email}`}>{siteContent.contact.email}</a>
                 </div>
               </div>
 
@@ -97,7 +127,7 @@ export default async function ContactPage() {
                   <span />
                 </div>
                 <div>
-                  <small>Telefon</small>
+                  <small>{t.contact.phone}</small>
                   <a href={`tel:${siteContent.contact.phone.replace(/\s+/g, "")}`}>
                     {siteContent.contact.phone}
                   </a>
@@ -109,7 +139,7 @@ export default async function ContactPage() {
                   <span />
                 </div>
                 <div>
-                  <small>Ünvan</small>
+                  <small>{t.contact.address}</small>
                   <strong>{offices[0].address}</strong>
                   <span>
                     {offices[0].city}, {offices[0].country}
@@ -121,31 +151,28 @@ export default async function ContactPage() {
 
           <form className="contact-modern-form">
             <label className="field">
-              <span>Ad Soyad</span>
-              <input type="text" placeholder="Ad və soyadınız" />
+              <span>{t.contact.fullName}</span>
+              <input type="text" placeholder={t.contact.fullNamePlaceholder} />
             </label>
 
             <label className="field">
-              <span>Email</span>
+              <span>{t.contact.email}</span>
               <input type="email" placeholder="email@example.com" />
             </label>
 
             <label className="field">
-              <span>Telefon (İstəyə bağlı)</span>
-              <input type="tel" placeholder="+994 XX XXX XX XX" />
+              <span>{t.contact.phone}</span>
+              <input type="tel" placeholder={t.contact.phonePlaceholder} />
             </label>
 
             <label className="field field-textarea">
-              <span>Mesaj</span>
-              <textarea
-                rows={8}
-                placeholder="Layihəniz haqqında bizə yazın..."
-              />
+              <span>{t.contact.message}</span>
+              <textarea rows={8} placeholder={t.contact.messagePlaceholder} />
             </label>
 
             <div className="contact-modern-form__actions">
               <button className="button button-accent" type="submit">
-                Göndər <span className="arrow">-&gt;</span>
+                {t.contact.send} <span className="arrow">-&gt;</span>
               </button>
             </div>
           </form>
@@ -153,6 +180,7 @@ export default async function ContactPage() {
       </section>
 
       <SiteFooter
+        locale={locale}
         contactEmail={siteContent.contact.email}
         contactPhone={siteContent.contact.phone}
         contactOffice={siteContent.contact.office}

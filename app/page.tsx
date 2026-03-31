@@ -2,13 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter, SiteHeader } from "./components/site-sections";
 import { aboutImageOne, aboutImageTwo, heroImage } from "./lib/site-data";
+import { getMessages } from "./lib/messages";
+import { getCurrentLocale } from "./lib/request-locale";
 import { getInsights, getSiteContent } from "./lib/wordpress";
 
 const partnerLogos = ["SOCAR", "Azercell", "PASHA Bank", "Kapital Bank"];
 
 export default async function Home() {
-  const content = await getSiteContent();
-  const insights = await getInsights();
+  const locale = await getCurrentLocale();
+  const t = getMessages(locale);
+  const content = await getSiteContent(locale);
+  const insights = await getInsights(locale);
 
   const mosaicImages = [
     { src: heroImage, alt: "Laptop interface", tall: true },
@@ -36,10 +40,10 @@ export default async function Home() {
           <p>{content.homeHero.description}</p>
           <div className="hero-actions">
             <Link className="button button-accent" href="/contact">
-              Layihəyə Başla →
+              {t.home.startProject} →
             </Link>
             <Link className="button button-outline" href="/portfolio">
-              İşlərimiz
+              {t.home.ourWorks}
             </Link>
           </div>
         </div>
@@ -64,7 +68,7 @@ export default async function Home() {
 
       <section className="webline-partners">
         <div className="shell webline-partners__row">
-          <span>Sənaye liderlərinin etibar etdiyi</span>
+          <span>{t.home.trustedBy}</span>
           {partnerLogos.map((partner) => (
             <strong key={partner}>{partner}</strong>
           ))}
@@ -89,14 +93,18 @@ export default async function Home() {
               <h2>{content.pageIntros.portfolio.title}</h2>
             </div>
             <Link className="button button-outline" href="/portfolio">
-              Bütün layihələr →
+              {t.home.allProjects} →
             </Link>
           </div>
 
           <div className="webline-project-grid">
             {insights.slice(0, 3).map((project, index) => (
               <article
-                className={index === 0 ? "project-card project-card--large project-card--dark" : "project-card project-card--dark"}
+                className={
+                  index === 0
+                    ? "project-card project-card--large project-card--dark"
+                    : "project-card project-card--dark"
+                }
                 key={project.title}
               >
                 <div className="project-browser">
@@ -130,7 +138,7 @@ export default async function Home() {
 
           <div className="webline-stat-card">
             <strong>8+</strong>
-            <span>İlk rəqəmsal mükəmməllik töhfəsi</span>
+            <span>{t.home.statText}</span>
           </div>
         </div>
       </section>
@@ -139,11 +147,12 @@ export default async function Home() {
         <h2>{content.contact.panelTitle}</h2>
         <p>{content.contact.panelDescription}</p>
         <Link className="button button-accent" href="/contact">
-          Konsultasiya rezerv edin →
+          {t.home.reserveConsultation} →
         </Link>
       </section>
 
       <SiteFooter
+        locale={locale}
         contactEmail={content.contact.email}
         contactPhone={content.contact.phone}
         contactOffice={content.contact.office}

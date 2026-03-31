@@ -1,130 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import type { CSSProperties } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { defaultLocale, isLocale, localeCookieName, locales } from "../lib/locale";
 import { WeblineLogo } from "./webline-logo";
 
-type LocaleCode = "az" | "en" | "ru" | "de" | "tr";
 type ThemeMode = "light" | "dark";
-
-type LocaleOption = {
-  code: LocaleCode;
-  label: string;
-  short: string;
-};
-
-const localeOptions: LocaleOption[] = [
-  { code: "az", label: "Azərbaycan", short: "AZ" },
-  { code: "en", label: "English", short: "EN" },
-  { code: "ru", label: "Русский", short: "RU" },
-  { code: "de", label: "Deutsch", short: "DE" },
-  { code: "tr", label: "Türkçe", short: "TR" },
-];
-
-const navByLocale: Record<LocaleCode, Array<{ href: string; label: string }>> = {
-  az: [
-    { href: "/about", label: "Haqqımızda" },
-    { href: "/portfolio", label: "Portfolio" },
-    { href: "/process", label: "Partnyorlar" },
-    { href: "/services", label: "Xidmətlər" },
-    { href: "/contact", label: "Əlaqə" },
-  ],
-  en: [
-    { href: "/about", label: "About" },
-    { href: "/portfolio", label: "Portfolio" },
-    { href: "/process", label: "Partners" },
-    { href: "/services", label: "Services" },
-    { href: "/contact", label: "Contact" },
-  ],
-  ru: [
-    { href: "/about", label: "О нас" },
-    { href: "/portfolio", label: "Портфолио" },
-    { href: "/process", label: "Партнёры" },
-    { href: "/services", label: "Услуги" },
-    { href: "/contact", label: "Контакты" },
-  ],
-  de: [
-    { href: "/about", label: "Über uns" },
-    { href: "/portfolio", label: "Portfolio" },
-    { href: "/process", label: "Partner" },
-    { href: "/services", label: "Leistungen" },
-    { href: "/contact", label: "Kontakt" },
-  ],
-  tr: [
-    { href: "/about", label: "Hakkımızda" },
-    { href: "/portfolio", label: "Portföy" },
-    { href: "/process", label: "Partnerler" },
-    { href: "/services", label: "Hizmetler" },
-    { href: "/contact", label: "İletişim" },
-  ],
-};
-
-const chromeByLocale: Record<
-  LocaleCode,
-  {
-    contactLabel: string;
-    meta: string;
-    cta: string;
-    openMenu: string;
-    closeMenu: string;
-    language: string;
-    themeLight: string;
-    themeDark: string;
-  }
-> = {
-  az: {
-    contactLabel: "Əlaqə",
-    meta: "Veb saytlar, məhsul dizaynı və performans yönümlü rəqəmsal təcrübələr.",
-    cta: "Layihəyə Başla",
-    openMenu: "Menyunu aç",
-    closeMenu: "Menyunu bağla",
-    language: "Dil seçimi",
-    themeLight: "Qaranlıq rejimi aktiv et",
-    themeDark: "İşıqlı rejimi aktiv et",
-  },
-  en: {
-    contactLabel: "Contact",
-    meta: "Websites, product design, and performance-first digital experiences.",
-    cta: "Start Project",
-    openMenu: "Open menu",
-    closeMenu: "Close menu",
-    language: "Language selector",
-    themeLight: "Switch to dark mode",
-    themeDark: "Switch to light mode",
-  },
-  ru: {
-    contactLabel: "Контакты",
-    meta: "Сайты, продуктовый дизайн и цифровые решения с упором на результат.",
-    cta: "Начать проект",
-    openMenu: "Открыть меню",
-    closeMenu: "Закрыть меню",
-    language: "Выбор языка",
-    themeLight: "Включить тёмную тему",
-    themeDark: "Включить светлую тему",
-  },
-  de: {
-    contactLabel: "Kontakt",
-    meta: "Websites, Produktdesign und leistungsorientierte digitale Erlebnisse.",
-    cta: "Projekt starten",
-    openMenu: "Menü öffnen",
-    closeMenu: "Menü schließen",
-    language: "Sprachauswahl",
-    themeLight: "Dunkelmodus aktivieren",
-    themeDark: "Hellmodus aktivieren",
-  },
-  tr: {
-    contactLabel: "İletişim",
-    meta: "Web siteleri, ürün tasarımı ve performans odaklı dijital deneyimler.",
-    cta: "Projeye Başla",
-    openMenu: "Menüyü aç",
-    closeMenu: "Menüyü kapat",
-    language: "Dil seçici",
-    themeLight: "Karanlık moda geç",
-    themeDark: "Aydınlık moda geç",
-  },
-};
 
 function GlobeIcon() {
   return (
@@ -194,23 +78,31 @@ function SunIcon() {
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations();
   const [menuOpen, setMenuOpen] = useState(false);
   const [localeOpen, setLocaleOpen] = useState(false);
-  const [locale, setLocale] = useState<LocaleCode>("az");
   const [theme, setTheme] = useState<ThemeMode>("light");
 
-  const navItems = useMemo(() => navByLocale[locale], [locale]);
-  const chromeLabels = chromeByLocale[locale];
+  const resolvedLocale = isLocale(locale) ? locale : defaultLocale;
+  const localeOptions = locales.map((code) => ({
+    code,
+    label: t(`locales.${code}.label`),
+    short: t(`locales.${code}.short`),
+  }));
+  const navItems = [
+    { href: "/about", label: t("header.nav.about") },
+    { href: "/portfolio", label: t("header.nav.portfolio") },
+    { href: "/process", label: t("header.nav.partners") },
+    { href: "/services", label: t("header.nav.services") },
+    { href: "/contact", label: t("header.nav.contact") },
+  ];
   const activeLocale =
-    localeOptions.find((option) => option.code === locale) ?? localeOptions[0];
+    localeOptions.find((option) => option.code === resolvedLocale) ?? localeOptions[0];
 
   useEffect(() => {
-    const savedLocale = window.localStorage.getItem("webline-locale") as LocaleCode | null;
     const savedTheme = window.localStorage.getItem("webline-theme") as ThemeMode | null;
-
-    if (savedLocale && savedLocale in navByLocale) {
-      setLocale(savedLocale);
-    }
 
     if (savedTheme === "dark" || savedTheme === "light") {
       setTheme(savedTheme);
@@ -224,10 +116,6 @@ export function SiteHeader() {
     setMenuOpen(false);
     setLocaleOpen(false);
   }, [pathname]);
-
-  useEffect(() => {
-    window.localStorage.setItem("webline-locale", locale);
-  }, [locale]);
 
   useEffect(() => {
     window.localStorage.setItem("webline-theme", theme);
@@ -257,6 +145,13 @@ export function SiteHeader() {
     };
   }, []);
 
+  const setLocaleCookie = (nextLocale: string) => {
+    document.cookie = `${localeCookieName}=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
+    setLocaleOpen(false);
+    setMenuOpen(false);
+    router.refresh();
+  };
+
   return (
     <header className="topbar">
       <nav className="shell nav" aria-label="Primary">
@@ -282,7 +177,7 @@ export function SiteHeader() {
               type="button"
               className={localeOpen ? "nav-locale__trigger is-open" : "nav-locale__trigger"}
               aria-expanded={localeOpen}
-              aria-label={chromeLabels.language}
+              aria-label={t("header.language")}
               onClick={() => setLocaleOpen((open) => !open)}
             >
               <GlobeIcon />
@@ -292,17 +187,14 @@ export function SiteHeader() {
 
             <div className={localeOpen ? "nav-locale__menu is-open" : "nav-locale__menu"}>
               {localeOptions.map((option) => {
-                const isActive = option.code === locale;
+                const isActive = option.code === resolvedLocale;
 
                 return (
                   <button
                     key={option.code}
                     type="button"
                     className={isActive ? "nav-locale__option is-active" : "nav-locale__option"}
-                    onClick={() => {
-                      setLocale(option.code);
-                      setLocaleOpen(false);
-                    }}
+                    onClick={() => setLocaleCookie(option.code)}
                   >
                     <span>{option.label}</span>
                     <strong>{option.short}</strong>
@@ -315,7 +207,7 @@ export function SiteHeader() {
           <button
             type="button"
             className="theme-toggle"
-            aria-label={theme === "light" ? chromeLabels.themeLight : chromeLabels.themeDark}
+            aria-label={theme === "light" ? t("header.themeLight") : t("header.themeDark")}
             onClick={() => setTheme((current) => (current === "light" ? "dark" : "light"))}
           >
             {theme === "dark" ? <SunIcon /> : <MoonIcon />}
@@ -324,7 +216,7 @@ export function SiteHeader() {
           <button
             aria-controls="mobile-menu"
             aria-expanded={menuOpen}
-            aria-label={menuOpen ? chromeLabels.closeMenu : chromeLabels.openMenu}
+            aria-label={menuOpen ? t("header.closeMenu") : t("header.openMenu")}
             className={menuOpen ? "nav-toggle is-open" : "nav-toggle"}
             onClick={() => setMenuOpen((open) => !open)}
             type="button"
@@ -344,15 +236,12 @@ export function SiteHeader() {
         type="button"
       />
 
-      <div
-        className={menuOpen ? "nav-panel is-open" : "nav-panel"}
-        id="mobile-menu"
-      >
+      <div className={menuOpen ? "nav-panel is-open" : "nav-panel"} id="mobile-menu">
         <div className="shell nav-panel__inner">
           <div className="nav-panel__top">
             <WeblineLogo className="brand-logo" />
             <button
-              aria-label={chromeLabels.closeMenu}
+              aria-label={t("header.closeMenu")}
               className="nav-close"
               onClick={() => setMenuOpen(false)}
               type="button"
@@ -382,11 +271,11 @@ export function SiteHeader() {
             <button
               type="button"
               className="theme-toggle nav-panel__theme-toggle"
-              aria-label={theme === "light" ? chromeLabels.themeLight : chromeLabels.themeDark}
+              aria-label={theme === "light" ? t("header.themeLight") : t("header.themeDark")}
               onClick={() => setTheme((current) => (current === "light" ? "dark" : "light"))}
             >
               {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-              <span>{theme === "light" ? chromeLabels.themeLight : chromeLabels.themeDark}</span>
+              <span>{theme === "light" ? t("header.themeLight") : t("header.themeDark")}</span>
             </button>
 
             <div className="nav-panel__languages">
@@ -394,8 +283,12 @@ export function SiteHeader() {
                 <button
                   key={option.code}
                   type="button"
-                  className={option.code === locale ? "nav-panel__language is-active" : "nav-panel__language"}
-                  onClick={() => setLocale(option.code)}
+                  className={
+                    option.code === resolvedLocale
+                      ? "nav-panel__language is-active"
+                      : "nav-panel__language"
+                  }
+                  onClick={() => setLocaleCookie(option.code)}
                 >
                   <span>{option.label}</span>
                   <strong>{option.short}</strong>
@@ -406,15 +299,15 @@ export function SiteHeader() {
 
           <div className="nav-panel__footer">
             <div className="nav-panel__contact">
-              <span>{chromeLabels.contactLabel}</span>
+              <span>{t("header.contactLabel")}</span>
               <a href="mailto:info@webline.az">info@webline.az</a>
               <a href="tel:+994505551212">+994 50 555 12 12</a>
             </div>
-            <div className="nav-panel__meta">{chromeLabels.meta}</div>
+            <div className="nav-panel__meta">{t("header.meta")}</div>
           </div>
 
           <Link className="button button-primary nav-panel__cta" href="/contact">
-            {chromeLabels.cta}
+            {t("header.cta")}
           </Link>
         </div>
       </div>
