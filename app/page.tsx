@@ -69,7 +69,9 @@ export default async function Home() {
               key={`column-${columnIndex}`}
               style={
                 {
-                  "--mosaic-duration": `${18 + columnIndex * 3}s`,
+                  "--mosaic-duration": `${28 + columnIndex * 4}s`,
+                  "--mosaic-offset": `${columnIndex % 2 === 0 ? -10 + columnIndex * 4 : 8 - columnIndex * 3}px`,
+                  "--mosaic-drift": `${columnIndex % 2 === 0 ? 8 : -8}px`,
                 } as CSSProperties
               }
             >

@@ -1361,6 +1361,8 @@ html[data-theme="dark"] .webline-page {
   min-height: 44rem;
   max-height: 44rem;
   overflow: hidden;
+  transform: translateY(var(--mosaic-offset, 0));
+  transition: transform 500ms ease;
   mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
 }
@@ -1375,6 +1377,14 @@ html[data-theme="dark"] .webline-page {
 
 .webline-mosaic__column--reverse .webline-mosaic__track {
   animation-name: mosaic-vertical-loop-reverse;
+}
+
+.webline-mosaic:hover .webline-mosaic__track {
+  animation-play-state: paused;
+}
+
+.webline-mosaic:hover .webline-mosaic__column {
+  transform: translateY(calc(var(--mosaic-offset, 0) + var(--mosaic-drift, 0)));
 }
 
 .mosaic-card {
@@ -2596,6 +2606,7 @@ html[data-theme="dark"] .office-map-link {
     min-height: auto;
     max-height: none;
     overflow: visible;
+    transform: none;
     mask-image: none;
     -webkit-mask-image: none;
   }
@@ -2603,6 +2614,10 @@ html[data-theme="dark"] .office-map-link {
   .webline-mosaic__track,
   .webline-mosaic__column--reverse .webline-mosaic__track {
     animation: none;
+  }
+
+  .webline-mosaic:hover .webline-mosaic__column {
+    transform: none;
   }
 
   .mosaic-card {
