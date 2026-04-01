@@ -98,10 +98,14 @@ export default async function Home() {
 
       <section className="webline-partners">
         <div className="shell webline-partners__row">
-          <span>{t.home.trustedBy}</span>
-          {partnerLogos.map((partner) => (
-            <strong key={partner}>{partner}</strong>
-          ))}
+          <span className="webline-partners__label">{t.home.trustedBy}</span>
+          <div className="webline-partners__marquee" aria-label="Partner logos">
+            <div className="webline-partners__track">
+              {[...partnerLogos, ...partnerLogos].map((partner, index) => (
+                <strong key={`${partner}-${index}`}>{partner}</strong>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
