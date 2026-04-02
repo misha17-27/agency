@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Webline Headless CMS
  * Description: Headless WordPress configuration for the Webline Next.js frontend.
- * Version: 1.8.0
+ * Version: 1.9.0
  * Author: Misha17-27
  */
 
@@ -36,6 +36,7 @@ const WEBLINE_SERVICE_SYNC_OPTION = 'webline_headless_service_sync_v120';
 const WEBLINE_OFFICE_SYNC_OPTION = 'webline_headless_office_sync_v150';
 const WEBLINE_PORTFOLIO_SYNC_OPTION = 'webline_headless_portfolio_sync_v160';
 const WEBLINE_PORTFOLIO_TAXONOMY_SYNC_OPTION = 'webline_headless_portfolio_taxonomy_sync_v170';
+const WEBLINE_ABOUT_SYNC_OPTION = 'webline_headless_about_sync_v190';
 
 function webline_normalize_lang(?string $lang): string
 {
@@ -456,6 +457,47 @@ function webline_intro_fields(string $prefix): array
     ];
 }
 
+function webline_about_layout_fields(): array
+{
+    return [
+        ['key' => 'field_about_layout_eyebrow', 'label' => 'Page Eyebrow', 'name' => 'about_page_eyebrow', 'type' => 'text'],
+        ['key' => 'field_about_layout_title', 'label' => 'Page Title', 'name' => 'about_page_title', 'type' => 'text'],
+        ['key' => 'field_about_layout_subtitle', 'label' => 'Page Subtitle', 'name' => 'about_page_subtitle', 'type' => 'textarea', 'rows' => 3],
+        ['key' => 'field_about_story_eyebrow', 'label' => 'Story Eyebrow', 'name' => 'about_story_eyebrow', 'type' => 'text'],
+        ['key' => 'field_about_story_title', 'label' => 'Story Title', 'name' => 'about_story_title', 'type' => 'text'],
+        ['key' => 'field_about_story_accent', 'label' => 'Story Accent', 'name' => 'about_story_accent', 'type' => 'text'],
+        ['key' => 'field_about_story_paragraph_1', 'label' => 'Story Paragraph 1', 'name' => 'about_story_paragraph_1', 'type' => 'textarea', 'rows' => 4],
+        ['key' => 'field_about_story_paragraph_2', 'label' => 'Story Paragraph 2', 'name' => 'about_story_paragraph_2', 'type' => 'textarea', 'rows' => 4],
+        ['key' => 'field_about_stat_value', 'label' => 'Stat Value', 'name' => 'about_stat_value', 'type' => 'text'],
+        ['key' => 'field_about_stat_label', 'label' => 'Stat Label', 'name' => 'about_stat_label', 'type' => 'text'],
+        ['key' => 'field_about_metric_1_value', 'label' => 'Metric 1 Value', 'name' => 'about_metric_1_value', 'type' => 'text'],
+        ['key' => 'field_about_metric_1_label', 'label' => 'Metric 1 Label', 'name' => 'about_metric_1_label', 'type' => 'text'],
+        ['key' => 'field_about_metric_2_value', 'label' => 'Metric 2 Value', 'name' => 'about_metric_2_value', 'type' => 'text'],
+        ['key' => 'field_about_metric_2_label', 'label' => 'Metric 2 Label', 'name' => 'about_metric_2_label', 'type' => 'text'],
+        ['key' => 'field_about_metric_3_value', 'label' => 'Metric 3 Value', 'name' => 'about_metric_3_value', 'type' => 'text'],
+        ['key' => 'field_about_metric_3_label', 'label' => 'Metric 3 Label', 'name' => 'about_metric_3_label', 'type' => 'text'],
+        ['key' => 'field_about_metric_4_value', 'label' => 'Metric 4 Value', 'name' => 'about_metric_4_value', 'type' => 'text'],
+        ['key' => 'field_about_metric_4_label', 'label' => 'Metric 4 Label', 'name' => 'about_metric_4_label', 'type' => 'text'],
+        ['key' => 'field_about_beliefs_eyebrow', 'label' => 'Beliefs Eyebrow', 'name' => 'about_beliefs_eyebrow', 'type' => 'text'],
+        ['key' => 'field_about_beliefs_title', 'label' => 'Beliefs Title', 'name' => 'about_beliefs_title', 'type' => 'text'],
+        ['key' => 'field_about_belief_1_title', 'label' => 'Belief 1 Title', 'name' => 'about_belief_1_title', 'type' => 'text'],
+        ['key' => 'field_about_belief_1_description', 'label' => 'Belief 1 Description', 'name' => 'about_belief_1_description', 'type' => 'textarea', 'rows' => 3],
+        ['key' => 'field_about_belief_2_title', 'label' => 'Belief 2 Title', 'name' => 'about_belief_2_title', 'type' => 'text'],
+        ['key' => 'field_about_belief_2_description', 'label' => 'Belief 2 Description', 'name' => 'about_belief_2_description', 'type' => 'textarea', 'rows' => 3],
+        ['key' => 'field_about_belief_3_title', 'label' => 'Belief 3 Title', 'name' => 'about_belief_3_title', 'type' => 'text'],
+        ['key' => 'field_about_belief_3_description', 'label' => 'Belief 3 Description', 'name' => 'about_belief_3_description', 'type' => 'textarea', 'rows' => 3],
+        ['key' => 'field_about_belief_4_title', 'label' => 'Belief 4 Title', 'name' => 'about_belief_4_title', 'type' => 'text'],
+        ['key' => 'field_about_belief_4_description', 'label' => 'Belief 4 Description', 'name' => 'about_belief_4_description', 'type' => 'textarea', 'rows' => 3],
+        ['key' => 'field_about_offices_eyebrow', 'label' => 'Offices Eyebrow', 'name' => 'about_offices_eyebrow', 'type' => 'text'],
+        ['key' => 'field_about_offices_title', 'label' => 'Offices Title', 'name' => 'about_offices_title', 'type' => 'text'],
+        ['key' => 'field_about_offices_description', 'label' => 'Offices Description', 'name' => 'about_offices_description', 'type' => 'textarea', 'rows' => 4],
+        ['key' => 'field_about_offices_button', 'label' => 'Offices Button Label', 'name' => 'about_offices_button', 'type' => 'text'],
+        ['key' => 'field_about_cta_title', 'label' => 'CTA Title', 'name' => 'about_cta_title', 'type' => 'text'],
+        ['key' => 'field_about_cta_description', 'label' => 'CTA Description', 'name' => 'about_cta_description', 'type' => 'textarea', 'rows' => 3],
+        ['key' => 'field_about_cta_button', 'label' => 'CTA Button Label', 'name' => 'about_cta_button', 'type' => 'text'],
+    ];
+}
+
 function webline_portfolio_category_definitions(): array
 {
     return [
@@ -585,7 +627,7 @@ function webline_register_acf_groups(): void
             ['key' => 'field_about_bullet_1', 'label' => 'Bullet 1', 'name' => 'bullet_1', 'type' => 'text'],
             ['key' => 'field_about_bullet_2', 'label' => 'Bullet 2', 'name' => 'bullet_2', 'type' => 'text'],
             ['key' => 'field_about_bullet_3', 'label' => 'Bullet 3', 'name' => 'bullet_3', 'type' => 'text'],
-        ]),
+        ], webline_about_layout_fields()),
         'location' => webline_page_location('about'),
     ]);
 
@@ -746,6 +788,41 @@ function webline_seed_defaults(): void
             'bullet_1' => 'Research-led UX and interface strategy',
             'bullet_2' => 'Scalable, maintainable frontend architecture',
             'bullet_3' => 'Performance-focused engineering',
+            'about_page_eyebrow' => 'HAQQIMIZDA',
+            'about_page_title' => 'Rəqəmsal sənətkarlıq, biznes təsiri',
+            'about_page_subtitle' => '2017-ci ildən müasir veb həllər, proqram təminatı və rəqəmsal strategiyalar hazırlayırıq — Azərbaycandan dünyaya.',
+            'about_story_eyebrow' => 'HEKAYƏMİZ',
+            'about_story_title' => 'Kiçik bir komandadan',
+            'about_story_accent' => 'beynəlxalq agentliyə',
+            'about_story_paragraph_1' => 'Webline Bakıda kiçik bir veb dizayn studiyası kimi fəaliyyətə başlayıb. Bu gün Azərbaycan, Almaniya, Avstriya və Macarıstanda ofislərimiz olan tam xidmətli rəqəmsal agentliyik.',
+            'about_story_paragraph_2' => 'Müxtəlif sənaye sahələrindən olan müştərilərimizə — startap-lardan böyük korporasiyalara qədər — rəqəmsal transformasiya yolunda etibarlı texnoloji tərəfdaş kimi xidmət göstəririk.',
+            'about_stat_value' => '8+',
+            'about_stat_label' => 'İlk rəqəmsal mükəmməllik töhfəmiz',
+            'about_metric_1_value' => '8+',
+            'about_metric_1_label' => 'İl təcrübə',
+            'about_metric_2_value' => '200+',
+            'about_metric_2_label' => 'Tamamlanmış layihə',
+            'about_metric_3_value' => '4',
+            'about_metric_3_label' => 'Ölkə ofisi',
+            'about_metric_4_value' => '50+',
+            'about_metric_4_label' => 'Aktiv müştəri',
+            'about_beliefs_eyebrow' => 'YANAŞMAMIZ',
+            'about_beliefs_title' => 'Nəyə inanırıq',
+            'about_belief_1_title' => 'Performans odaqlı',
+            'about_belief_1_description' => 'Hər layihədə sürət, keyfiyyət və ölçülənə bilən nəticələr əsas prioritetimizdir. Texnologiyanı biznes məqsədlərinə xidmət etdiririk.',
+            'about_belief_2_title' => 'Dizayn mükəmməlliyi',
+            'about_belief_2_description' => 'İstifadəçi araşdırmasına əsaslanan UX dizayn metodologiyamız brendinizi fərqləndirən rəqəmsal təcrübələr yaradır.',
+            'about_belief_3_title' => 'Uzunmüddətli tərəfdaşlıq',
+            'about_belief_3_description' => 'Bir dəfəlik layihə deyil, davamlı əməkdaşlıq qururuq. Müştərilərimizin böyüməsi bizim uğurumuzdur.',
+            'about_belief_4_title' => 'Ölçülə bilən nəticə',
+            'about_belief_4_description' => 'Hər qərar data ilə dəstəklənir. Strategiyalarımız konkret KPI-lara və biznes göstəricilərinə bağlıdır.',
+            'about_offices_eyebrow' => 'QLOBAL MÖVCUDLUQ',
+            'about_offices_title' => '4 ölkə, bir missiya',
+            'about_offices_description' => 'Bakıda, Berlində, Vyanada və Budapeştdə işləyən komandamız fərqli bazarların ritmini anlayır və məhsulları lokal ehtiyaclara uyğunlaşdırır.',
+            'about_offices_button' => 'Ofislərimizə keçid edin',
+            'about_cta_title' => 'Əla bir şey qurmağa hazırsınız?',
+            'about_cta_description' => 'Layihənizi müzakirə edək və rəqəmsal məqsədlərinizə necə çata biləcəyinizi birlikdə aydınlaşdıraq.',
+            'about_cta_button' => 'Konsultasiya rezerv edin',
         ],
         'portfolio' => [
             'intro_eyebrow' => 'Portfolio',
@@ -1118,6 +1195,68 @@ function webline_sync_portfolio_v160(): void
 }
 add_action('admin_init', 'webline_sync_portfolio_v160');
 
+function webline_sync_about_v190(): void
+{
+    if (get_option(WEBLINE_ABOUT_SYNC_OPTION) === '1' || !function_exists('update_field') || !function_exists('get_field')) {
+        return;
+    }
+
+    $page = webline_get_page('about');
+
+    if (!$page instanceof WP_Post) {
+        return;
+    }
+
+    $defaults = [
+        'about_page_eyebrow' => 'HAQQIMIZDA',
+        'about_page_title' => 'Rəqəmsal sənətkarlıq, biznes təsiri',
+        'about_page_subtitle' => '2017-ci ildən müasir veb həllər, proqram təminatı və rəqəmsal strategiyalar hazırlayırıq — Azərbaycandan dünyaya.',
+        'about_story_eyebrow' => 'HEKAYƏMİZ',
+        'about_story_title' => 'Kiçik bir komandadan',
+        'about_story_accent' => 'beynəlxalq agentliyə',
+        'about_story_paragraph_1' => 'Webline Bakıda kiçik bir veb dizayn studiyası kimi fəaliyyətə başlayıb. Bu gün Azərbaycan, Almaniya, Avstriya və Macarıstanda ofislərimiz olan tam xidmətli rəqəmsal agentliyik.',
+        'about_story_paragraph_2' => 'Müxtəlif sənaye sahələrindən olan müştərilərimizə — startap-lardan böyük korporasiyalara qədər — rəqəmsal transformasiya yolunda etibarlı texnoloji tərəfdaş kimi xidmət göstəririk.',
+        'about_stat_value' => '8+',
+        'about_stat_label' => 'İlk rəqəmsal mükəmməllik töhfəmiz',
+        'about_metric_1_value' => '8+',
+        'about_metric_1_label' => 'İl təcrübə',
+        'about_metric_2_value' => '200+',
+        'about_metric_2_label' => 'Tamamlanmış layihə',
+        'about_metric_3_value' => '4',
+        'about_metric_3_label' => 'Ölkə ofisi',
+        'about_metric_4_value' => '50+',
+        'about_metric_4_label' => 'Aktiv müştəri',
+        'about_beliefs_eyebrow' => 'YANAŞMAMIZ',
+        'about_beliefs_title' => 'Nəyə inanırıq',
+        'about_belief_1_title' => 'Performans odaqlı',
+        'about_belief_1_description' => 'Hər layihədə sürət, keyfiyyət və ölçülənə bilən nəticələr əsas prioritetimizdir. Texnologiyanı biznes məqsədlərinə xidmət etdiririk.',
+        'about_belief_2_title' => 'Dizayn mükəmməlliyi',
+        'about_belief_2_description' => 'İstifadəçi araşdırmasına əsaslanan UX dizayn metodologiyamız brendinizi fərqləndirən rəqəmsal təcrübələr yaradır.',
+        'about_belief_3_title' => 'Uzunmüddətli tərəfdaşlıq',
+        'about_belief_3_description' => 'Bir dəfəlik layihə deyil, davamlı əməkdaşlıq qururuq. Müştərilərimizin böyüməsi bizim uğurumuzdur.',
+        'about_belief_4_title' => 'Ölçülə bilən nəticə',
+        'about_belief_4_description' => 'Hər qərar data ilə dəstəklənir. Strategiyalarımız konkret KPI-lara və biznes göstəricilərinə bağlıdır.',
+        'about_offices_eyebrow' => 'QLOBAL MÖVCUDLUQ',
+        'about_offices_title' => '4 ölkə, bir missiya',
+        'about_offices_description' => 'Bakıda, Berlində, Vyanada və Budapeştdə işləyən komandamız fərqli bazarların ritmini anlayır və məhsulları lokal ehtiyaclara uyğunlaşdırır.',
+        'about_offices_button' => 'Ofislərimizə keçid edin',
+        'about_cta_title' => 'Əla bir şey qurmağa hazırsınız?',
+        'about_cta_description' => 'Layihənizi müzakirə edək və rəqəmsal məqsədlərinizə necə çata biləcəyinizi birlikdə aydınlaşdıraq.',
+        'about_cta_button' => 'Konsultasiya rezerv edin',
+    ];
+
+    foreach ($defaults as $field => $value) {
+        $currentValue = get_field($field, $page->ID);
+
+        if ($currentValue === null || $currentValue === '') {
+            update_field($field, $value, $page->ID);
+        }
+    }
+
+    update_option(WEBLINE_ABOUT_SYNC_OPTION, '1');
+}
+add_action('admin_init', 'webline_sync_about_v190');
+
 function webline_get_frontend_page_url(WP_Post $post): string
 {
     $slug = $post->post_name ?: '';
@@ -1285,6 +1424,69 @@ function webline_get_office_data(?string $lang = null): array
     });
 }
 
+function webline_get_about_page_data(?string $lang = null): array
+{
+    return [
+        'eyebrow' => webline_get_field_value('about', 'about_page_eyebrow', 'HAQQIMIZDA', $lang),
+        'title' => webline_get_field_value('about', 'about_page_title', 'Rəqəmsal sənətkarlıq, biznes təsiri', $lang),
+        'subtitle' => webline_get_field_value('about', 'about_page_subtitle', '', $lang),
+        'featureEyebrow' => webline_get_field_value('about', 'about_story_eyebrow', 'HEKAYƏMİZ', $lang),
+        'featureTitle' => webline_get_field_value('about', 'about_story_title', 'Kiçik bir komandadan', $lang),
+        'featureAccent' => webline_get_field_value('about', 'about_story_accent', 'beynəlxalq agentliyə', $lang),
+        'featureParagraphs' => array_values(array_filter([
+            webline_get_field_value('about', 'about_story_paragraph_1', '', $lang),
+            webline_get_field_value('about', 'about_story_paragraph_2', '', $lang),
+        ])),
+        'statValue' => webline_get_field_value('about', 'about_stat_value', '8+', $lang),
+        'statLabel' => webline_get_field_value('about', 'about_stat_label', '', $lang),
+        'metrics' => array_values(array_filter([
+            [
+                'value' => webline_get_field_value('about', 'about_metric_1_value', '', $lang),
+                'label' => webline_get_field_value('about', 'about_metric_1_label', '', $lang),
+            ],
+            [
+                'value' => webline_get_field_value('about', 'about_metric_2_value', '', $lang),
+                'label' => webline_get_field_value('about', 'about_metric_2_label', '', $lang),
+            ],
+            [
+                'value' => webline_get_field_value('about', 'about_metric_3_value', '', $lang),
+                'label' => webline_get_field_value('about', 'about_metric_3_label', '', $lang),
+            ],
+            [
+                'value' => webline_get_field_value('about', 'about_metric_4_value', '', $lang),
+                'label' => webline_get_field_value('about', 'about_metric_4_label', '', $lang),
+            ],
+        ], static fn($item) => $item['value'] !== '' || $item['label'] !== '')),
+        'beliefsEyebrow' => webline_get_field_value('about', 'about_beliefs_eyebrow', 'YANAŞMAMIZ', $lang),
+        'beliefsTitle' => webline_get_field_value('about', 'about_beliefs_title', 'Nəyə inanırıq', $lang),
+        'beliefs' => array_values(array_filter([
+            [
+                'title' => webline_get_field_value('about', 'about_belief_1_title', '', $lang),
+                'description' => webline_get_field_value('about', 'about_belief_1_description', '', $lang),
+            ],
+            [
+                'title' => webline_get_field_value('about', 'about_belief_2_title', '', $lang),
+                'description' => webline_get_field_value('about', 'about_belief_2_description', '', $lang),
+            ],
+            [
+                'title' => webline_get_field_value('about', 'about_belief_3_title', '', $lang),
+                'description' => webline_get_field_value('about', 'about_belief_3_description', '', $lang),
+            ],
+            [
+                'title' => webline_get_field_value('about', 'about_belief_4_title', '', $lang),
+                'description' => webline_get_field_value('about', 'about_belief_4_description', '', $lang),
+            ],
+        ], static fn($item) => $item['title'] !== '' || $item['description'] !== '')),
+        'officesEyebrow' => webline_get_field_value('about', 'about_offices_eyebrow', 'QLOBAL MÖVCUDLUQ', $lang),
+        'officesTitle' => webline_get_field_value('about', 'about_offices_title', '4 ölkə, bir missiya', $lang),
+        'officesDescription' => webline_get_field_value('about', 'about_offices_description', '', $lang),
+        'officesButton' => webline_get_field_value('about', 'about_offices_button', '', $lang),
+        'ctaTitle' => webline_get_field_value('about', 'about_cta_title', '', $lang),
+        'ctaDescription' => webline_get_field_value('about', 'about_cta_description', '', $lang),
+        'ctaButton' => webline_get_field_value('about', 'about_cta_button', '', $lang),
+    ];
+}
+
 function webline_build_settings_payload(?string $lang = null): array
 {
     return webline_with_lang($lang, static function () {
@@ -1309,6 +1511,7 @@ function webline_build_settings_payload(?string $lang = null): array
                     webline_get_field_value('about', 'bullet_3', ''),
                 ])),
             ],
+            'aboutPage' => webline_get_about_page_data($lang),
             'process' => [
                 'heading' => webline_get_field_value('process', 'section_heading', 'How We Work'),
                 'items' => [

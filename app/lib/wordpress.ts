@@ -1,4 +1,5 @@
 import {
+  type AboutPageContent,
   fallbackInsights,
   fallbackSiteContent,
   type InsightItem,
@@ -106,6 +107,7 @@ export async function getSiteContent(locale?: LocaleCode): Promise<SiteContent> 
     data.services?.items && data.services.items.length >= 6
       ? data.services.items
       : fallbackSiteContent.services.items;
+  const fallbackAboutPage = fallbackSiteContent.aboutPage;
 
   return {
     ...fallbackSiteContent,
@@ -146,6 +148,22 @@ export async function getSiteContent(locale?: LocaleCode): Promise<SiteContent> 
     pageIntros: {
       ...fallbackSiteContent.pageIntros,
       ...data.pageIntros,
+    },
+    aboutPage: {
+      ...fallbackAboutPage,
+      ...(data.aboutPage as Partial<AboutPageContent> | undefined),
+      featureParagraphs:
+        data.aboutPage?.featureParagraphs?.length
+          ? data.aboutPage.featureParagraphs
+          : fallbackAboutPage?.featureParagraphs ?? [],
+      metrics:
+        data.aboutPage?.metrics?.length
+          ? data.aboutPage.metrics
+          : fallbackAboutPage?.metrics ?? [],
+      beliefs:
+        data.aboutPage?.beliefs?.length
+          ? data.aboutPage.beliefs
+          : fallbackAboutPage?.beliefs ?? [],
     },
   };
 }

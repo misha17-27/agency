@@ -301,7 +301,23 @@ function getAboutPageCopy(locale: LocaleCode): AboutPageCopy {
 export default async function AboutPage() {
   const locale = await getCurrentLocale();
   const siteContent = await getSiteContent(locale);
-  const copy = getAboutPageCopy(locale);
+  const fallbackCopy = getAboutPageCopy(locale);
+  const copy = {
+    ...fallbackCopy,
+    ...siteContent.aboutPage,
+    featureParagraphs:
+      siteContent.aboutPage?.featureParagraphs?.length
+        ? siteContent.aboutPage.featureParagraphs
+        : fallbackCopy.featureParagraphs,
+    metrics:
+      siteContent.aboutPage?.metrics?.length
+        ? siteContent.aboutPage.metrics
+        : fallbackCopy.metrics,
+    beliefs:
+      siteContent.aboutPage?.beliefs?.length
+        ? siteContent.aboutPage.beliefs
+        : fallbackCopy.beliefs,
+  };
   const officePreview = siteContent.offices.slice(0, 4);
 
   return (
@@ -330,7 +346,7 @@ export default async function AboutPage() {
         </div>
 
         <div className="about-feature__stat">
-          <strong>8+</strong>
+          <strong>{copy.statValue}</strong>
           <span>{copy.statLabel}</span>
         </div>
       </section>

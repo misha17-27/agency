@@ -55,6 +55,29 @@ export type PageIntroContent = {
   description: string;
 };
 
+export type AboutPageContent = {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  featureEyebrow: string;
+  featureTitle: string;
+  featureAccent: string;
+  featureParagraphs: string[];
+  statValue: string;
+  statLabel: string;
+  metrics: Array<{ value: string; label: string }>;
+  beliefsEyebrow: string;
+  beliefsTitle: string;
+  beliefs: Array<{ title: string; description: string }>;
+  officesEyebrow: string;
+  officesTitle: string;
+  officesDescription: string;
+  officesButton: string;
+  ctaTitle: string;
+  ctaDescription: string;
+  ctaButton: string;
+};
+
 export type SiteContent = {
   homeHero: {
     eyebrow: string;
@@ -95,6 +118,7 @@ export type SiteContent = {
   portfolioCategories: PortfolioCategoryContent[];
   offices: ContactOffice[];
   pageIntros: Record<string, PageIntroContent>;
+  aboutPage: AboutPageContent;
 };
 
 export const navItems: NavItem[] = [
@@ -405,6 +429,60 @@ export const fallbackSiteContent: SiteContent = {
       description:
         "Use the contact page for project requests, partnerships, and strategic conversations. The form is ready for backend wiring when you decide where submissions should go.",
     },
+  },
+  aboutPage: {
+    eyebrow: "HAQQIMIZDA",
+    title: "Rəqəmsal sənətkarlıq, biznes təsiri",
+    subtitle:
+      "2017-ci ildən müasir veb həllər, proqram təminatı və rəqəmsal strategiyalar hazırlayırıq — Azərbaycandan dünyaya.",
+    featureEyebrow: "HEKAYƏMİZ",
+    featureTitle: "Kiçik bir komandadan",
+    featureAccent: "beynəlxalq agentliyə",
+    featureParagraphs: [
+      "Webline Bakıda kiçik bir veb dizayn studiyası kimi fəaliyyətə başlayıb. Bu gün Azərbaycan, Almaniya, Avstriya və Macarıstanda ofislərimiz olan tam xidmətli rəqəmsal agentliyik.",
+      "Müxtəlif sənaye sahələrindən olan müştərilərimizə — startap-lardan böyük korporasiyalara qədər — rəqəmsal transformasiya yolunda etibarlı texnoloji tərəfdaş kimi xidmət göstəririk.",
+    ],
+    statValue: "8+",
+    statLabel: "İlk rəqəmsal mükəmməllik töhfəmiz",
+    metrics: [
+      { value: "8+", label: "İl təcrübə" },
+      { value: "200+", label: "Tamamlanmış layihə" },
+      { value: "4", label: "Ölkə ofisi" },
+      { value: "50+", label: "Aktiv müştəri" },
+    ],
+    beliefsEyebrow: "YANAŞMAMIZ",
+    beliefsTitle: "Nəyə inanırıq",
+    beliefs: [
+      {
+        title: "Performans odaqlı",
+        description:
+          "Hər layihədə sürət, keyfiyyət və ölçülənə bilən nəticələr əsas prioritetimizdir. Texnologiyanı biznes məqsədlərinə xidmət etdiririk.",
+      },
+      {
+        title: "Dizayn mükəmməlliyi",
+        description:
+          "İstifadəçi araşdırmasına əsaslanan UX dizayn metodologiyamız brendinizi fərqləndirən rəqəmsal təcrübələr yaradır.",
+      },
+      {
+        title: "Uzunmüddətli tərəfdaşlıq",
+        description:
+          "Bir dəfəlik layihə deyil, davamlı əməkdaşlıq qururuq. Müştərilərimizin böyüməsi bizim uğurumuzdur.",
+      },
+      {
+        title: "Ölçülə bilən nəticə",
+        description:
+          "Hər qərar data ilə dəstəklənir. Strategiyalarımız konkret KPI-lara və biznes göstəricilərinə bağlıdır.",
+      },
+    ],
+    officesEyebrow: "QLOBAL MÖVCUDLUQ",
+    officesTitle: "4 ölkə, bir missiya",
+    officesDescription:
+      "Bakıda, Berlində, Vyanada və Budapeştdə işləyən komandamız fərqli bazarların ritmini anlayır və məhsulları lokal ehtiyaclara uyğunlaşdırır.",
+    officesButton: "Ofislərimizə keçid edin",
+    ctaTitle: "Əla bir şey qurmağa hazırsınız?",
+    ctaDescription:
+      "Layihənizi müzakirə edək və rəqəmsal məqsədlərinizə necə çata biləcəyinizi birlikdə aydınlaşdıraq.",
+    ctaButton: "Konsultasiya rezerv edin",
   },
 };
 
