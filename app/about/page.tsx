@@ -11,7 +11,7 @@ type AboutPageCopy = {
   featureEyebrow: string;
   featureTitle: string;
   featureAccent: string;
-  featureDescription: string;
+  featureParagraphs: string[];
   statLabel: string;
   metrics: Array<{ value: string; label: string }>;
   beliefsEyebrow: string;
@@ -32,12 +32,14 @@ function getAboutPageCopy(locale: LocaleCode): AboutPageCopy {
       eyebrow: "HAQQIMIZDA",
       title: "Rəqəmsal sənətkarlıq, biznes təsiri",
       subtitle:
-        "2030 üçün lider veb, proqram təminatı və rəqəmsal strategiya tərəfdaşı olmağı hədəfləyirik.",
-      featureEyebrow: "MISSIYA",
+        "2017-ci ildən müasir veb həllər, proqram təminatı və rəqəmsal strategiyalar hazırlayırıq — Azərbaycandan dünyaya.",
+      featureEyebrow: "HEKAYƏMİZ",
       featureTitle: "Kiçik bir komandadan",
       featureAccent: "beynəlxalq agentliyə",
-      featureDescription:
-        "Webline Bakıda yerləşən tam xidmətli rəqəmsal agentlikdir. Müasir, funksional rəqəmsal məhsullar hazırlayır və bizneslərə daha aydın rəqəmsal sistem qurmaqda dəstək oluruq.",
+      featureParagraphs: [
+        "Webline Bakıda kiçik bir veb dizayn studiyası kimi fəaliyyətə başlayıb. Bu gün Azərbaycan, Almaniya, Avstriya və Macarıstanda ofislərimiz olan tam xidmətli rəqəmsal agentliyik.",
+        "Müxtəlif sənaye sahələrindən olan müştərilərimizə — startap-lardan böyük korporasiyalara qədər — rəqəmsal transformasiya yolunda etibarlı texnoloji tərəfdaş kimi xidmət göstəririk.",
+      ],
       statLabel: "İlk rəqəmsal mükəmməllik töhfəmiz",
       metrics: [
         { value: "8+", label: "İl təcrübə" },
@@ -45,28 +47,28 @@ function getAboutPageCopy(locale: LocaleCode): AboutPageCopy {
         { value: "4", label: "Ölkə ofisi" },
         { value: "50+", label: "Aktiv müştəri" },
       ],
-      beliefsEyebrow: "PRİNSİPLƏR",
+      beliefsEyebrow: "YANAŞMAMIZ",
       beliefsTitle: "Nəyə inanırıq",
       beliefs: [
         {
-          title: "Performans odaklılıq",
+          title: "Performans odaqlı",
           description:
-            "Hər məhsul sürətli, aydın və biznes məqsədlərinə yaxın rəqəmsal təcrübə yaratmalıdır.",
+            "Hər layihədə sürət, keyfiyyət və ölçülənə bilən nəticələr əsas prioritetimizdir. Texnologiyanı biznes məqsədlərinə xidmət etdiririk.",
         },
         {
           title: "Dizayn mükəmməlliyi",
           description:
-            "Görünüş və istifadə rahatlığı vahid sistem kimi işləməlidir. Biz buna eyni ciddiliklə yanaşırıq.",
+            "İstifadəçi araşdırmasına əsaslanan UX dizayn metodologiyamız brendinizi fərqləndirən rəqəmsal təcrübələr yaradır.",
         },
         {
           title: "Uzunmüddətli tərəfdaşlıq",
           description:
-            "Təhvil sonrası inkişaf ritmini qoruyan, layihəni uzun məsafədə daşıyan əməkdaşlıq modeli qururuq.",
+            "Bir dəfəlik layihə deyil, davamlı əməkdaşlıq qururuq. Müştərilərimizin böyüməsi bizim uğurumuzdur.",
         },
         {
           title: "Ölçülə bilən nəticə",
           description:
-            "Dizayn və texnologiya yalnız real biznes nəticəsi yaratdıqda tamamlanmış sayılır.",
+            "Hər qərar data ilə dəstəklənir. Strategiyalarımız konkret KPI-lara və biznes göstəricilərinə bağlıdır.",
         },
       ],
       officesEyebrow: "QLOBAL MÖVCUDLUQ",
@@ -83,12 +85,14 @@ function getAboutPageCopy(locale: LocaleCode): AboutPageCopy {
       eyebrow: "ABOUT",
       title: "Digital craft, business impact",
       subtitle:
-        "We are building toward becoming a leading website, software, and digital strategy partner by 2030.",
-      featureEyebrow: "MISSION",
+        "Since 2017, we have been building modern web solutions, software products, and digital strategies from Azerbaijan to the wider market.",
+      featureEyebrow: "OUR STORY",
       featureTitle: "From a compact team to an",
       featureAccent: "international agency",
-      featureDescription:
-        "Webline is a full-service digital agency based in Baku. We design modern digital products and help businesses build clearer digital systems.",
+      featureParagraphs: [
+        "Webline started in Baku as a small web design studio. Today we are a full-service digital agency with offices in Azerbaijan, Germany, Austria, and Hungary.",
+        "We support clients across industries — from startups to large corporations — as a dependable technology partner on their digital transformation journey.",
+      ],
       statLabel: "Our early contribution to digital excellence",
       metrics: [
         { value: "8+", label: "Years of practice" },
@@ -96,7 +100,7 @@ function getAboutPageCopy(locale: LocaleCode): AboutPageCopy {
         { value: "4", label: "Office countries" },
         { value: "50+", label: "Active clients" },
       ],
-      beliefsEyebrow: "PRINCIPLES",
+      beliefsEyebrow: "OUR APPROACH",
       beliefsTitle: "What we believe in",
       beliefs: [
         {
@@ -134,12 +138,14 @@ function getAboutPageCopy(locale: LocaleCode): AboutPageCopy {
       eyebrow: "О НАС",
       title: "Цифровое мастерство, влияние на бизнес",
       subtitle:
-        "К 2030 году мы стремимся стать ведущим партнером по сайтам, софту и цифровой стратегии.",
-      featureEyebrow: "МИССИЯ",
+        "С 2017 года мы создаём современные веб-решения, программные продукты и цифровые стратегии — из Азербайджана для более широкого рынка.",
+      featureEyebrow: "НАША ИСТОРИЯ",
       featureTitle: "От небольшой команды к",
       featureAccent: "международному агентству",
-      featureDescription:
-        "Webline — цифровое агентство полного цикла из Баку. Мы создаём современные цифровые продукты и помогаем бизнесу строить более понятные цифровые системы.",
+      featureParagraphs: [
+        "Webline начала путь в Баку как небольшая студия веб-дизайна. Сегодня это digital-агентство полного цикла с офисами в Азербайджане, Германии, Австрии и Венгрии.",
+        "Мы помогаем клиентам из разных отраслей — от стартапов до крупных корпораций — как надёжный технологический партнёр в цифровой трансформации.",
+      ],
       statLabel: "Наш ранний вклад в цифровое совершенство",
       metrics: [
         { value: "8+", label: "Лет опыта" },
@@ -147,7 +153,7 @@ function getAboutPageCopy(locale: LocaleCode): AboutPageCopy {
         { value: "4", label: "Страны присутствия" },
         { value: "50+", label: "Активных клиентов" },
       ],
-      beliefsEyebrow: "ПРИНЦИПЫ",
+      beliefsEyebrow: "НАШ ПОДХОД",
       beliefsTitle: "Во что мы верим",
       beliefs: [
         {
@@ -185,12 +191,14 @@ function getAboutPageCopy(locale: LocaleCode): AboutPageCopy {
       eyebrow: "ÜBER UNS",
       title: "Digitale Präzision, geschäftliche Wirkung",
       subtitle:
-        "Bis 2030 wollen wir ein führender Partner für Websites, Software und digitale Strategie sein.",
-      featureEyebrow: "MISSION",
+        "Seit 2017 entwickeln wir moderne Weblösungen, Softwareprodukte und digitale Strategien — von Aserbaidschan aus für internationale Märkte.",
+      featureEyebrow: "UNSERE GESCHICHTE",
       featureTitle: "Von einem kleinen Team zu einer",
       featureAccent: "internationalen Agentur",
-      featureDescription:
-        "Webline ist eine Full-Service-Digitalagentur aus Baku. Wir entwickeln moderne digitale Produkte und helfen Unternehmen, klarere digitale Systeme aufzubauen.",
+      featureParagraphs: [
+        "Webline begann in Baku als kleines Webdesign-Studio. Heute sind wir eine Full-Service-Digitalagentur mit Büros in Aserbaidschan, Deutschland, Österreich und Ungarn.",
+        "Wir begleiten Kunden aus unterschiedlichsten Branchen — von Startups bis zu großen Unternehmen — als verlässlicher Technologiepartner in der digitalen Transformation.",
+      ],
       statLabel: "Unser früher Beitrag zur digitalen Exzellenz",
       metrics: [
         { value: "8+", label: "Jahre Erfahrung" },
@@ -198,7 +206,7 @@ function getAboutPageCopy(locale: LocaleCode): AboutPageCopy {
         { value: "4", label: "Länder mit Offices" },
         { value: "50+", label: "Aktive Kunden" },
       ],
-      beliefsEyebrow: "PRINZIPIEN",
+      beliefsEyebrow: "UNSER ANSATZ",
       beliefsTitle: "Woran wir glauben",
       beliefs: [
         {
@@ -236,12 +244,14 @@ function getAboutPageCopy(locale: LocaleCode): AboutPageCopy {
       eyebrow: "HAKKIMIZDA",
       title: "Dijital ustalık, iş etkisi",
       subtitle:
-        "2030’a kadar web, yazılım ve dijital strateji alanında öncü bir iş ortağı olmayı hedefliyoruz.",
-      featureEyebrow: "MİSYON",
+        "2017’den beri modern web çözümleri, yazılım ürünleri ve dijital stratejiler geliştiriyoruz — Azerbaycan’dan daha geniş pazarlara.",
+      featureEyebrow: "HİKAYEMİZ",
       featureTitle: "Küçük bir ekipten",
       featureAccent: "uluslararası ajansa",
-      featureDescription:
-        "Webline, Bakü merkezli tam hizmet dijital ajanstır. Modern dijital ürünler tasarlar ve işletmelerin daha net dijital sistemler kurmasına yardımcı olur.",
+      featureParagraphs: [
+        "Webline, Bakü’de küçük bir web tasarım stüdyosu olarak başladı. Bugün Azerbaycan, Almanya, Avusturya ve Macaristan’da ofisleri olan tam hizmet dijital ajansız.",
+        "Startuplardan büyük şirketlere kadar farklı sektörlerdeki müşterilere dijital dönüşüm yolculuklarında güvenilir teknoloji ortağı olarak destek veriyoruz.",
+      ],
       statLabel: "Dijital mükemmelliğe erken katkımız",
       metrics: [
         { value: "8+", label: "Yıllık deneyim" },
@@ -249,7 +259,7 @@ function getAboutPageCopy(locale: LocaleCode): AboutPageCopy {
         { value: "4", label: "Ofis ülkesi" },
         { value: "50+", label: "Aktif müşteri" },
       ],
-      beliefsEyebrow: "İLKELER",
+      beliefsEyebrow: "YAKLAŞIMIMIZ",
       beliefsTitle: "Neye inanıyoruz",
       beliefs: [
         {
@@ -312,7 +322,11 @@ export default async function AboutPage() {
             <br />
             <em>{copy.featureAccent}</em>
           </h2>
-          <p>{copy.featureDescription}</p>
+          <div className="about-feature__body">
+            {copy.featureParagraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
         </div>
 
         <div className="about-feature__stat">
