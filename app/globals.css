@@ -275,17 +275,17 @@ html[data-theme="dark"] .theme-toggle:hover {
   width: 3rem;
   height: 3rem;
   padding: 0;
-  border: 1px solid rgba(17, 18, 23, 0.08);
+  border: 0;
   border-radius: 999px;
-  background: rgba(243, 244, 248, 0.96);
-  box-shadow: 0 10px 28px rgba(18, 26, 45, 0.14);
+  background: transparent;
+  box-shadow: none;
 }
 
 .nav-toggle span {
   position: absolute;
   left: 50%;
-  width: 1rem;
-  height: 2px;
+  width: 1.1rem;
+  height: 2.5px;
   background: #111217;
   border-radius: 999px;
   transform: translateX(-50%);
@@ -293,13 +293,12 @@ html[data-theme="dark"] .theme-toggle:hover {
 }
 
 html[data-theme="dark"] .nav-toggle {
-  border-color: rgba(243, 244, 248, 0.12);
-  background: rgba(243, 244, 248, 0.96);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  background: transparent;
+  box-shadow: none;
 }
 
 html[data-theme="dark"] .nav-toggle span {
-  background: #111217;
+  background: #f3f4f8;
 }
 
 .nav-toggle span:nth-child(1) {
