@@ -275,10 +275,10 @@ html[data-theme="dark"] .theme-toggle:hover {
   width: 3rem;
   height: 3rem;
   padding: 0;
-  border: 1px solid rgba(29, 61, 218, 0.14);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.82);
-  box-shadow: 0 12px 32px rgba(18, 26, 45, 0.08);
+  background: #111217;
+  box-shadow: 0 12px 32px rgba(18, 26, 45, 0.14);
 }
 
 .nav-toggle span {
@@ -286,7 +286,7 @@ html[data-theme="dark"] .theme-toggle:hover {
   left: 50%;
   width: 1rem;
   height: 2px;
-  background: var(--text);
+  background: #ffffff;
   border-radius: 999px;
   transform: translateX(-50%);
   transition: transform 180ms ease, opacity 180ms ease, top 180ms ease;
