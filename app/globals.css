@@ -74,35 +74,11 @@
   color: var(--text);
 }
 
-.services-reference-tabs a::before {
+.services-reference-tab-icon {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
   color: currentColor;
-  font-size: 1rem;
-  font-weight: 500;
-  content: "</>";
-}
-
-.services-reference-tabs a:nth-child(2)::before {
-  content: "⌘";
-}
-
-.services-reference-tabs a:nth-child(3)::before {
-  content: "♧";
-}
-
-.services-reference-tabs a:nth-child(4)::before {
-  content: "▣";
-}
-
-.services-reference-tabs a:nth-child(5)::before {
-  content: "⚙";
-}
-
-.services-reference-tabs a:nth-child(6)::before {
-  content: "♙";
-}
-
-.services-reference-tabs a:nth-child(7)::before {
-  content: "▥";
 }
 
 .services-reference-tabs a:first-child {
@@ -174,9 +150,10 @@
   font-size: 0;
 }
 
-.services-reference-group__intro .eyebrow::after {
-  font-size: 1rem;
-  content: "</>";
+.services-reference-group-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  color: currentColor;
 }
 
 .services-reference-group__intro h2 {
