@@ -1,3 +1,8 @@
+import type { LocaleCode } from "./locale";
+import {
+  normalizePortfolioCategorySlug,
+  type PortfolioProject,
+} from "./portfolio-data";
 import {
   type AboutPageContent,
   fallbackInsights,
@@ -7,8 +12,6 @@ import {
   type PortfolioCategoryContent,
   type SiteContent,
 } from "./site-data";
-import type { LocaleCode } from "./locale";
-import type { PortfolioProject } from "./portfolio-data";
 
 type WpRendered = {
   rendered: string;
@@ -226,7 +229,9 @@ export async function getPortfolioProjects(
     .filter((item) => item.image && item.title)
     .map((item, index) => ({
       slug: item.slug || `portfolio-${index + 1}`,
-      category: (item.categorySlug as PortfolioProject["category"]) || "saytlar",
+      category: normalizePortfolioCategorySlug(
+        (item.categorySlug || item.category || "website") as PortfolioProject["category"]
+      ),
       badge: item.badge || item.category || "Portfolio",
       title: item.title,
       description: item.description,
@@ -237,9 +242,7 @@ export async function getPortfolioProjects(
           ?.filter((galleryItem) => galleryItem.src)
           .map((galleryItem, galleryIndex) => ({
             src: galleryItem.src as string,
-            alt:
-              galleryItem.alt ||
-              `${item.title} gallery ${galleryIndex + 1}`,
+            alt: galleryItem.alt || `${item.title} gallery ${galleryIndex + 1}`,
           })) || [],
     }));
 }
@@ -259,12 +262,22 @@ export async function getPortfolioCategoriesFromCms(
   return categories
     .filter((item) => item.slug && item.title)
     .map((item) => ({
-      slug: item.slug as string,
+      slug: normalizePortfolioCategorySlug(item.slug as string),
       title: item.title as string,
       description: item.description || "",
       shortLabel:
         item.shortLabel ||
-        `${item.count ?? 0} ${locale === "en" ? "projects" : locale === "tr" ? "proje" : locale === "de" ? "projekte" : locale === "ru" ? "проектов" : "layihə"}`,
+        `${item.count ?? 0} ${
+          locale === "en"
+            ? "projects"
+            : locale === "tr"
+              ? "proje"
+              : locale === "de"
+                ? "projekte"
+                : locale === "ru"
+                  ? "проектов"
+                  : "layihə"
+        }`,
     }));
 }
 

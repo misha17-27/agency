@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "webline.az",
       },
+      {
+        protocol: "https",
+        hostname: "fls-9f1d25fb-59b4-45a0-a922-2d3c65bf4734.laravel.cloud",
+      },
     ],
   },
 };

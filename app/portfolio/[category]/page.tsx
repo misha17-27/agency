@@ -8,9 +8,12 @@ import {
 } from "../../components/site-sections";
 import {
   fallbackPortfolioProjects,
-  getPortfolioCategories,
   getPortfolioCategory,
   getPortfolioPageCopy,
+  getPortfolioRouteSlug,
+  mergePortfolioCategories,
+  mergePortfolioProjects,
+  normalizePortfolioCategorySlug,
 } from "../../lib/portfolio-data";
 import { localizeHref } from "../../lib/locale";
 import { getCurrentLocale } from "../../lib/request-locale";
@@ -26,6 +29,7 @@ export default async function PortfolioCategoryPage({
   params: Promise<{ category: string }>;
 }) {
   const { category } = await params;
+  const normalizedCategory = normalizePortfolioCategorySlug(category);
   const locale = await getCurrentLocale();
   const [siteContent, cmsProjects, cmsCategories] = await Promise.all([
     getSiteContent(locale),
@@ -33,10 +37,17 @@ export default async function PortfolioCategoryPage({
     getPortfolioCategoriesFromCms(locale),
   ]);
   const pageCopy = getPortfolioPageCopy(locale);
-  const portfolioProjects = cmsProjects.length ? cmsProjects : fallbackPortfolioProjects;
-  const categorySource =
-    cmsCategories.length ? cmsCategories : siteContent.portfolioCategories;
-  const categoryExists = categorySource.some((item) => item.slug === category);
+  const portfolioProjects = mergePortfolioProjects(
+    cmsProjects,
+    fallbackPortfolioProjects
+  );
+  const categorySource = mergePortfolioCategories(
+    cmsCategories,
+    siteContent.portfolioCategories
+  );
+  const categoryExists = categorySource.some(
+    (item) => normalizePortfolioCategorySlug(item.slug) === normalizedCategory
+  );
 
   if (!categoryExists) {
     notFound();
@@ -44,18 +55,13 @@ export default async function PortfolioCategoryPage({
 
   const categoryCopy = getPortfolioCategory(
     locale,
-    category,
+    normalizedCategory,
     categorySource
   );
-  const categories = getPortfolioCategories(
-    locale,
-    categorySource,
-    portfolioProjects
-  );
   const projects = portfolioProjects.filter(
-    (project) => project.category === category
+    (project) =>
+      normalizePortfolioCategorySlug(project.category) === normalizedCategory
   );
-  const featuredProject = projects[0];
 
   return (
     <main className="page-shell">
@@ -68,46 +74,23 @@ export default async function PortfolioCategoryPage({
           <span>{categoryCopy.title}</span>
         </nav>
 
-        <div className="portfolio-category-hero">
-          <div className="portfolio-category-hero__copy">
-            <div className="portfolio-category-hero__icon" aria-hidden="true">
-              01
-            </div>
+        <div className="portfolio-category-heading">
+          <div className="portfolio-category-heading__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M8 8l8 8M9 16H6v-3M15 8h3v3"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.9"
+              />
+            </svg>
+          </div>
+          <div className="portfolio-category-heading__copy">
             <h1>{categoryCopy.title}</h1>
             <p>{categoryCopy.description}</p>
           </div>
-
-          {featuredProject ? (
-            <div className="portfolio-category-showcase">
-              <Image
-                src={featuredProject.image}
-                alt={featuredProject.alt}
-                width={960}
-                height={720}
-                sizes="(max-width: 1080px) 100vw, 42vw"
-              />
-              <div className="portfolio-category-showcase__meta">
-                <span>{featuredProject.badge}</span>
-                <strong>{featuredProject.title}</strong>
-              </div>
-            </div>
-          ) : null}
-        </div>
-
-        <div className="portfolio-category-tabs" aria-label={pageCopy.categoriesLabel}>
-          {categories.map((item) => (
-            <Link
-              key={item.slug}
-              href={localizeHref(`/portfolio/${item.slug}`, locale)}
-              className={
-                item.slug === category
-                  ? "portfolio-category-tabs__item is-active"
-                  : "portfolio-category-tabs__item"
-              }
-            >
-              {item.title}
-            </Link>
-          ))}
         </div>
 
         {projects.length ? (
@@ -115,7 +98,10 @@ export default async function PortfolioCategoryPage({
             {projects.map((project) => (
               <Link
                 key={project.slug}
-                href={localizeHref(`/portfolio/${category}/${project.slug}`, locale)}
+                href={localizeHref(
+                  `/portfolio/${getPortfolioRouteSlug(normalizedCategory)}/${project.slug}`,
+                  locale
+                )}
                 className="portfolio-project-card portfolio-project-card--link"
               >
                 <div className="portfolio-project-card__image">

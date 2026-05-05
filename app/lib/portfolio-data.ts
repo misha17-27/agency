@@ -3,17 +3,25 @@ import {
   fallbackSiteContent,
   type PortfolioCategoryContent,
 } from "./site-data";
+import {
+  referencePortfolioCategories,
+  referencePortfolioProjects,
+} from "./portfolio-reference-data";
 
 export type PortfolioCategorySlug = string;
+
+export type PortfolioCategoryIcon =
+  | "website"
+  | "design"
+  | "social"
+  | "video";
 
 export type PortfolioCategoryCard = {
   slug: PortfolioCategorySlug;
   title: string;
   description: string;
   shortLabel: string;
-  image: string;
-  alt: string;
-  featuredTitle: string;
+  icon: PortfolioCategoryIcon;
 };
 
 export type PortfolioProject = {
@@ -48,34 +56,61 @@ type PortfolioDictionary = {
       shortLabel: string;
     }
   >;
-  projects: PortfolioProject[];
+};
+
+const portfolioCategoryAliases: Record<string, PortfolioCategorySlug> = {
+  website: "website",
+  saytlar: "website",
+  web: "website",
+  site: "website",
+  sayt: "website",
+  dizayn: "dizayn",
+  dizaynlar: "dizayn",
+  design: "dizayn",
+  designs: "dizayn",
+  "social-media": "social-media",
+  "sosial-media": "social-media",
+  "social-media-marketing": "social-media",
+  social: "social-media",
+  smm: "social-media",
+  reels: "video-reels",
+  "video-reels": "video-reels",
+  video: "video-reels",
+  videos: "video-reels",
+};
+
+const portfolioCategoryIcons: Record<PortfolioCategorySlug, PortfolioCategoryIcon> = {
+  website: "website",
+  dizayn: "design",
+  "social-media": "social",
+  "video-reels": "video",
 };
 
 const portfolioContent: Record<LocaleCode, PortfolioDictionary> = {
   az: {
-    eyebrow: "Portfolio",
+    eyebrow: "PORTFOLIO",
     title: "İşlərimiz özü danışır",
     description:
-      "Veb, dizayn, sosial media və video istiqamətlərində hazırladığımız işləri kateqoriyalar üzrə kəşf edin.",
+      "Veb, mobil, video və brendinq sahələrindəki layihələrimizi kəşf edin — dəqiqlik və məqsədlə hazırlanmışdır.",
     categoriesLabel: "Kateqoriyalar",
     categoryLinkLabel: "Layihələri aç",
     breadcrumbRoot: "Portfolio",
     emptyTitle: "Bu kateqoriya üçün işlər hazırlanır",
     emptyDescription:
       "Bu bölməyə yeni layihələr əlavə olunduqca burada görünəcək.",
-    projectCountLabel: "layihə",
+    projectCountLabel: "PROJECTS",
     categories: {
-      saytlar: {
+      website: {
         title: "Saytlar",
         description: "website haqqında",
-        shortLabel: "Sayt həllərimiz",
+        shortLabel: "Website həllərimiz",
       },
-      dizaynlar: {
-        title: "Dizaynlar",
+      dizayn: {
+        title: "Dizayn",
         description: "Dizayn işlərimiz",
         shortLabel: "Brend və vizual dizayn",
       },
-      "sosial-media": {
+      "social-media": {
         title: "Sosial media",
         description: "SMM kampaniyaları",
         shortLabel: "Kontent və kampaniyalar",
@@ -86,230 +121,66 @@ const portfolioContent: Record<LocaleCode, PortfolioDictionary> = {
         shortLabel: "Motion və reels",
       },
     },
-    projects: [
-      {
-        slug: "qarabagh",
-        category: "saytlar",
-        badge: "QARABAGH",
-        title: "Qarabagh",
-        description:
-          "Korporativ təqdimat və strukturlaşdırılmış məzmun axını ilə hazırlanan veb təcrübə.",
-        image: "https://webline.az/wp-content/uploads/2024/02/service-01.jpg",
-        alt: "Qarabagh website project preview",
-      },
-      {
-        slug: "xezer-logistics",
-        category: "saytlar",
-        badge: "LOGISTICS",
-        title: "Xəzər Logistics",
-        description:
-          "Xidmət, komanda və əlaqə axınını sadələşdirən müasir korporativ sayt həlli.",
-        image: "https://webline.az/wp-content/uploads/2024/02/service-02.jpg",
-        alt: "Corporate logistics website preview",
-      },
-      {
-        slug: "natura-identity",
-        category: "dizaynlar",
-        badge: "BRAND ID",
-        title: "Natura identity",
-        description:
-          "Rəng sistemi, tipografiya və daşıyıcı materiallar üzərində qurulmuş vizual kimlik işi.",
-        image: "https://webline.az/wp-content/uploads/2024/02/part-04.jpg",
-        alt: "Brand identity design presentation",
-      },
-      {
-        slug: "atelier-packaging",
-        category: "dizaynlar",
-        badge: "PACKAGING",
-        title: "Atelier packaging",
-        description:
-          "Premium məhsul xətti üçün hazırlanmış qablaşdırma və rəf görünüşü konsepti.",
-        image: "https://webline.az/wp-content/uploads/2024/02/part-05.jpg",
-        alt: "Packaging design layout",
-      },
-      {
-        slug: "urban-campaign",
-        category: "sosial-media",
-        badge: "CAMPAIGN",
-        title: "Urban campaign",
-        description:
-          "Aylıq kampaniya planı, post seriyaları və performans yönümlü məzmun sistemi.",
-        image: "https://webline.az/wp-content/uploads/2024/02/part-02.jpg",
-        alt: "Social media campaign visuals",
-      },
-      {
-        slug: "food-launch",
-        category: "sosial-media",
-        badge: "SMM",
-        title: "Food launch",
-        description:
-          "Yeni məhsul buraxılışı üçün reels, post və story formatlarında hazırlanan SMM paketi.",
-        image: "https://webline.az/wp-content/uploads/2024/02/part-03.jpg",
-        alt: "Food brand social media visuals",
-      },
-      {
-        slug: "motion-reel",
-        category: "video-reels",
-        badge: "REEL",
-        title: "Motion reel",
-        description:
-          "Brend ritmini və məhsul mesajını qısa formatda çatdıran dinamik video reels layihəsi.",
-        image: "https://webline.az/wp-content/uploads/2024/02/part-01.jpg",
-        alt: "Motion reel project frame",
-      },
-      {
-        slug: "studio-short",
-        category: "video-reels",
-        badge: "SHORT VIDEO",
-        title: "Studio short",
-        description:
-          "Kulis, məkan və komanda atmosferini göstərən qısa tanıtım video paketi.",
-        image: "https://webline.az/wp-content/uploads/2024/02/part-06.jpg",
-        alt: "Short studio reel frame",
-      },
-    ],
   },
   en: {
-    eyebrow: "Portfolio",
+    eyebrow: "PORTFOLIO",
     title: "Our work speaks for itself",
     description:
-      "Explore our work across web, design, social media, and video categories.",
+      "Explore our work across web, branding, social media and short-form video.",
     categoriesLabel: "Categories",
     categoryLinkLabel: "Open projects",
     breadcrumbRoot: "Portfolio",
     emptyTitle: "Projects for this category are on the way",
     emptyDescription:
       "New work will appear here as soon as it is added to the portfolio.",
-    projectCountLabel: "projects",
+    projectCountLabel: "PROJECTS",
     categories: {
-      saytlar: {
+      website: {
         title: "Websites",
         description: "About websites",
         shortLabel: "Website solutions",
       },
-      dizaynlar: {
-        title: "Designs",
+      dizayn: {
+        title: "Design",
         description: "Our design work",
         shortLabel: "Brand and visual design",
       },
-      "sosial-media": {
+      "social-media": {
         title: "Social media",
         description: "SMM campaigns",
         shortLabel: "Content and campaigns",
       },
       "video-reels": {
         title: "Video reels",
-        description: "Short-form video work",
+        description: "Short-form videos",
         shortLabel: "Motion and reels",
       },
     },
-    projects: [
-      {
-        slug: "qarabagh",
-        category: "saytlar",
-        badge: "QARABAGH",
-        title: "Qarabagh",
-        description:
-          "A web experience built with a clear corporate presentation and structured content flow.",
-        image: "https://webline.az/wp-content/uploads/2024/02/service-01.jpg",
-        alt: "Qarabagh website project preview",
-      },
-      {
-        slug: "xezer-logistics",
-        category: "saytlar",
-        badge: "LOGISTICS",
-        title: "Khazar Logistics",
-        description:
-          "A modern corporate website that simplifies services, team, and contact flows.",
-        image: "https://webline.az/wp-content/uploads/2024/02/service-02.jpg",
-        alt: "Corporate logistics website preview",
-      },
-      {
-        slug: "natura-identity",
-        category: "dizaynlar",
-        badge: "BRAND ID",
-        title: "Natura identity",
-        description:
-          "A visual identity system shaped through color, typography, and branded touchpoints.",
-        image: "https://webline.az/wp-content/uploads/2024/02/Part-04.jpg",
-        alt: "Brand identity design presentation",
-      },
-      {
-        slug: "atelier-packaging",
-        category: "dizaynlar",
-        badge: "PACKAGING",
-        title: "Atelier packaging",
-        description:
-          "A premium packaging concept built for product presentation and shelf impact.",
-        image: "https://webline.az/wp-content/uploads/2024/02/Part-05.jpg",
-        alt: "Packaging design layout",
-      },
-      {
-        slug: "urban-campaign",
-        category: "sosial-media",
-        badge: "CAMPAIGN",
-        title: "Urban campaign",
-        description:
-          "A monthly campaign plan with post series and performance-oriented content direction.",
-        image: "https://webline.az/wp-content/uploads/2024/02/Part-02.jpg",
-        alt: "Social media campaign visuals",
-      },
-      {
-        slug: "food-launch",
-        category: "sosial-media",
-        badge: "SMM",
-        title: "Food launch",
-        description:
-          "A launch package with reels, posts, and story formats for a new product campaign.",
-        image: "https://webline.az/wp-content/uploads/2024/02/Part-03.jpg",
-        alt: "Food brand social media visuals",
-      },
-      {
-        slug: "motion-reel",
-        category: "video-reels",
-        badge: "REEL",
-        title: "Motion reel",
-        description:
-          "A short-form video piece built to communicate brand rhythm and product messaging.",
-        image: "https://webline.az/wp-content/uploads/2024/02/Part-01.jpg",
-        alt: "Motion reel project frame",
-      },
-      {
-        slug: "studio-short",
-        category: "video-reels",
-        badge: "SHORT VIDEO",
-        title: "Studio short",
-        description:
-          "A compact promo video package showing behind-the-scenes atmosphere and team presence.",
-        image: "https://webline.az/wp-content/uploads/2024/02/Part-06.jpg",
-        alt: "Short studio reel frame",
-      },
-    ],
   },
   ru: {
-    eyebrow: "Портфолио",
+    eyebrow: "ПОРТФОЛИО",
     title: "Наши работы говорят сами за себя",
     description:
-      "Изучайте наши проекты по направлениям: сайты, дизайн, social media и видео.",
+      "Изучайте проекты в направлениях веба, брендинга, social media и коротких видео.",
     categoriesLabel: "Категории",
     categoryLinkLabel: "Открыть проекты",
-    breadcrumbRoot: "Портфолио",
+    breadcrumbRoot: "Portfolio",
     emptyTitle: "Проекты для этой категории готовятся",
     emptyDescription:
       "Новые работы появятся здесь сразу после добавления в портфолио.",
-    projectCountLabel: "проектов",
+    projectCountLabel: "PROJECTS",
     categories: {
-      saytlar: {
+      website: {
         title: "Сайты",
         description: "О веб-сайтах",
         shortLabel: "Веб-решения",
       },
-      dizaynlar: {
+      dizayn: {
         title: "Дизайн",
         description: "Наши дизайн-работы",
         shortLabel: "Бренд и визуальный стиль",
       },
-      "sosial-media": {
+      "social-media": {
         title: "Соцсети",
         description: "SMM-кампании",
         shortLabel: "Контент и кампании",
@@ -320,32 +191,31 @@ const portfolioContent: Record<LocaleCode, PortfolioDictionary> = {
         shortLabel: "Motion и reels",
       },
     },
-    projects: [],
   },
   de: {
-    eyebrow: "Portfolio",
+    eyebrow: "PORTFOLIO",
     title: "Unsere Arbeiten sprechen für sich",
     description:
-      "Entdecken Sie unsere Arbeiten in den Bereichen Web, Design, Social Media und Video.",
+      "Entdecken Sie unsere Projekte in den Bereichen Web, Branding, Social Media und Kurzvideo.",
     categoriesLabel: "Kategorien",
     categoryLinkLabel: "Projekte öffnen",
     breadcrumbRoot: "Portfolio",
     emptyTitle: "Projekte für diese Kategorie folgen",
     emptyDescription:
       "Sobald neue Arbeiten hinzugefügt werden, erscheinen sie hier.",
-    projectCountLabel: "projekte",
+    projectCountLabel: "PROJECTS",
     categories: {
-      saytlar: {
+      website: {
         title: "Websites",
         description: "Über Websites",
         shortLabel: "Web-Lösungen",
       },
-      dizaynlar: {
-        title: "Designs",
+      dizayn: {
+        title: "Design",
         description: "Unsere Designarbeiten",
         shortLabel: "Marke und visuelles Design",
       },
-      "sosial-media": {
+      "social-media": {
         title: "Social Media",
         description: "SMM-Kampagnen",
         shortLabel: "Content und Kampagnen",
@@ -356,32 +226,31 @@ const portfolioContent: Record<LocaleCode, PortfolioDictionary> = {
         shortLabel: "Motion und Reels",
       },
     },
-    projects: [],
   },
   tr: {
-    eyebrow: "Portföy",
+    eyebrow: "PORTFÖY",
     title: "İşlerimiz kendini anlatır",
     description:
-      "Web, tasarım, sosyal medya ve video kategorilerindeki işlerimizi keşfedin.",
+      "Web, marka tasarımı, sosyal medya ve kısa video projelerimizi keşfedin.",
     categoriesLabel: "Kategoriler",
     categoryLinkLabel: "Projeleri aç",
-    breadcrumbRoot: "Portföy",
+    breadcrumbRoot: "Portfolio",
     emptyTitle: "Bu kategori için projeler hazırlanıyor",
     emptyDescription:
       "Yeni işler eklendikçe burada görünmeye başlayacak.",
-    projectCountLabel: "proje",
+    projectCountLabel: "PROJECTS",
     categories: {
-      saytlar: {
+      website: {
         title: "Web siteleri",
         description: "Web siteleri hakkında",
         shortLabel: "Web çözümleri",
       },
-      dizaynlar: {
-        title: "Tasarımlar",
+      dizayn: {
+        title: "Tasarım",
         description: "Tasarım işlerimiz",
         shortLabel: "Marka ve görsel tasarım",
       },
-      "sosial-media": {
+      "social-media": {
         title: "Sosyal medya",
         description: "SMM kampanyaları",
         shortLabel: "İçerik ve kampanyalar",
@@ -392,61 +261,213 @@ const portfolioContent: Record<LocaleCode, PortfolioDictionary> = {
         shortLabel: "Motion ve reels",
       },
     },
-    projects: [],
   },
 };
 
-export const fallbackPortfolioProjects: PortfolioProject[] =
-  portfolioContent.az.projects;
-
-const categoryCoverPresets: Record<
-  string,
-  { image: string; alt: string; featuredTitle: string }
-> = {
-  saytlar: {
-    image: "https://webline.az/wp-content/uploads/2024/02/service-01.jpg",
-    alt: "Website category preview",
-    featuredTitle: "Korporativ və məhsul saytları",
+const extraFallbackProjects: PortfolioProject[] = [
+  {
+    slug: "urban-campaign",
+    category: "social-media",
+    badge: "CAMPAIGN",
+    title: "Urban campaign",
+    description:
+      "Aylıq kampaniya planı, post seriyaları və performans yönümlü məzmun sistemi.",
+    image: "https://webline.az/wp-content/uploads/2024/02/Part-02.jpg",
+    alt: "Urban campaign cover",
+    gallery: [
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-02.jpg",
+        alt: "Urban campaign — Image 1",
+      },
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-03.jpg",
+        alt: "Urban campaign — Image 2",
+      },
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-04.jpg",
+        alt: "Urban campaign — Image 3",
+      },
+    ],
   },
-  dizaynlar: {
-    image: "https://webline.az/wp-content/uploads/2024/02/Part-04.jpg",
-    alt: "Design category preview",
-    featuredTitle: "Brend və vizual dizayn işləri",
-  },
-  "sosial-media": {
+  {
+    slug: "food-launch",
+    category: "social-media",
+    badge: "SMM",
+    title: "Food launch",
+    description:
+      "Yeni məhsul buraxılışı üçün reels, post və story formatlarında hazırlanan SMM paketi.",
     image: "https://webline.az/wp-content/uploads/2024/02/Part-03.jpg",
-    alt: "Social media category preview",
-    featuredTitle: "SMM və kampaniya vizualları",
+    alt: "Food launch cover",
+    gallery: [
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-03.jpg",
+        alt: "Food launch — Image 1",
+      },
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-04.jpg",
+        alt: "Food launch — Image 2",
+      },
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-05.jpg",
+        alt: "Food launch — Image 3",
+      },
+    ],
   },
-  "video-reels": {
+  {
+    slug: "motion-reel",
+    category: "video-reels",
+    badge: "REEL",
+    title: "Motion reel",
+    description:
+      "Brend ritmini və məhsul mesajını qısa formatda çatdıran dinamik video reels layihəsi.",
+    image: "https://webline.az/wp-content/uploads/2024/02/Part-01.jpg",
+    alt: "Motion reel cover",
+    gallery: [
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-01.jpg",
+        alt: "Motion reel — Image 1",
+      },
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-06.jpg",
+        alt: "Motion reel — Image 2",
+      },
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-02.jpg",
+        alt: "Motion reel — Image 3",
+      },
+    ],
+  },
+  {
+    slug: "studio-short",
+    category: "video-reels",
+    badge: "SHORT VIDEO",
+    title: "Studio short",
+    description:
+      "Kulis, məkan və komanda atmosferini göstərən qısa tanıtım video paketi.",
     image: "https://webline.az/wp-content/uploads/2024/02/Part-06.jpg",
-    alt: "Video reels category preview",
-    featuredTitle: "Qısa format video və reels",
+    alt: "Studio short cover",
+    gallery: [
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-06.jpg",
+        alt: "Studio short — Image 1",
+      },
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-01.jpg",
+        alt: "Studio short — Image 2",
+      },
+      {
+        src: "https://webline.az/wp-content/uploads/2024/02/Part-03.jpg",
+        alt: "Studio short — Image 3",
+      },
+    ],
   },
-};
+];
 
-function getCategoryContent(
+export const fallbackPortfolioProjects: PortfolioProject[] = [
+  ...referencePortfolioProjects.map((project) => ({
+    ...project,
+    gallery: project.gallery ? project.gallery.map((image) => ({ ...image })) : [],
+  })),
+  ...extraFallbackProjects,
+];
+
+export function mergePortfolioProjects(
+  cmsProjects: PortfolioProject[],
+  fallbackProjects: PortfolioProject[] = fallbackPortfolioProjects
+) {
+  const seen = new Set<string>();
+
+  return [...cmsProjects, ...fallbackProjects].filter((project) => {
+    const key = `${normalizePortfolioCategorySlug(project.category)}::${project.slug}`;
+
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
+}
+
+export function mergePortfolioCategories(
+  primary: PortfolioCategoryContent[],
+  fallback: PortfolioCategoryContent[] = fallbackSiteContent.portfolioCategories
+) {
+  const reference = referencePortfolioCategories.map((item) => ({
+    slug: item.slug,
+    title: item.title,
+    description: item.description,
+    shortLabel: "",
+  }));
+
+  return [...primary, ...reference, ...fallback];
+}
+
+export function normalizePortfolioCategorySlug(slug: string) {
+  const key = slug.trim().toLowerCase();
+  return portfolioCategoryAliases[key] ?? key;
+}
+
+export function getPortfolioRouteSlug(slug: string) {
+  return normalizePortfolioCategorySlug(slug);
+}
+
+function getDictionary(locale: LocaleCode) {
+  return portfolioContent[locale] ?? portfolioContent.az;
+}
+
+function getCategoryFallback(
+  locale: LocaleCode,
+  slug: string
+): PortfolioDictionary["categories"][string] {
+  const dictionary = getDictionary(locale);
+
+  return (
+    dictionary.categories[slug] ??
+    dictionary.categories[normalizePortfolioCategorySlug(slug)] ?? {
+      title: slug,
+      description: "",
+      shortLabel: slug,
+    }
+  );
+}
+
+function dedupeCategoryContent(
   locale: LocaleCode,
   categories?: PortfolioCategoryContent[]
-): PortfolioCategoryContent[] {
-  const dictionary = portfolioContent[locale] ?? portfolioContent.az;
-  const source =
-    categories?.length ? categories : fallbackSiteContent.portfolioCategories;
+) {
+  const source = categories?.length
+    ? categories
+    : [
+        ...referencePortfolioCategories,
+        ...fallbackSiteContent.portfolioCategories.map((item) => ({
+          ...item,
+          slug: normalizePortfolioCategorySlug(item.slug),
+        })),
+      ];
 
-  return source.map((item) => {
-    const fallbackCategory = dictionary.categories[item.slug];
+  const seen = new Set<string>();
 
-    return {
-      slug: item.slug,
-      title: item.title || fallbackCategory?.title || item.slug,
-      description:
-        item.description || fallbackCategory?.description || "",
+  return source.reduce<PortfolioCategoryContent[]>((result, item) => {
+    const slug = normalizePortfolioCategorySlug(item.slug);
+
+    if (seen.has(slug)) {
+      return result;
+    }
+
+    seen.add(slug);
+    const fallback = getCategoryFallback(locale, slug);
+
+    result.push({
+      slug,
+      title: item.title || fallback.title,
+      description: item.description || fallback.description,
       shortLabel:
-        item.shortLabel ||
-        fallbackCategory?.shortLabel ||
-        (fallbackCategory?.title ?? item.title ?? item.slug),
-    };
-  });
+        ("shortLabel" in item ? item.shortLabel : undefined) || fallback.shortLabel,
+    });
+
+    return result;
+  }, []);
 }
 
 export function getPortfolioCategories(
@@ -454,67 +475,36 @@ export function getPortfolioCategories(
   categories?: PortfolioCategoryContent[],
   projectsInput?: PortfolioProject[]
 ): PortfolioCategoryCard[] {
-  const dictionary = portfolioContent[locale] ?? portfolioContent.az;
-  const categoryContent = getCategoryContent(locale, categories);
-  const projects = projectsInput?.length ? projectsInput : getPortfolioProjects(locale);
+  const dictionary = getDictionary(locale);
+  const categoryContent = dedupeCategoryContent(locale, categories);
+  const projects = projectsInput?.length ? projectsInput : fallbackPortfolioProjects;
+
   const projectCountByCategory = projects.reduce<Record<string, number>>(
     (accumulator, project) => {
-      accumulator[project.category] = (accumulator[project.category] ?? 0) + 1;
+      const slug = normalizePortfolioCategorySlug(project.category);
+      accumulator[slug] = (accumulator[slug] ?? 0) + 1;
       return accumulator;
     },
     {}
   );
 
-  return categoryContent.map((category, index) => {
-    const previewProject = projects.find(
-      (project) => project.category === category.slug
-    );
-    const fallbackCategory = dictionary.categories[category.slug];
-    const count = projectCountByCategory[category.slug] ?? 0;
-    const preset =
-      categoryCoverPresets[category.slug] ??
-      ({
-        image:
-          fallbackPortfolioProjects[0]?.image ??
-          "https://webline.az/wp-content/uploads/2024/02/service-01.jpg",
-        alt:
-          fallbackPortfolioProjects[0]?.alt ?? "Portfolio category preview",
-        featuredTitle:
-          fallbackCategory?.shortLabel ??
-          category.shortLabel ??
-          category.title,
-      } satisfies {
-        image: string;
-        alt: string;
-        featuredTitle: string;
-      });
+  return categoryContent.map((category) => {
+    const slug = normalizePortfolioCategorySlug(category.slug);
+    const fallback = getCategoryFallback(locale, slug);
+    const count = projectCountByCategory[slug] ?? 0;
 
     return {
-      slug: category.slug,
-      title: category.title || fallbackCategory?.title || category.slug,
-      description:
-        category.description || fallbackCategory?.description || "",
+      slug: getPortfolioRouteSlug(slug),
+      title: category.title || fallback.title,
+      description: category.description || fallback.description,
       shortLabel: `${count} ${dictionary.projectCountLabel}`,
-      image: preset.image,
-      alt: preset.alt,
-      featuredTitle:
-        preset.featuredTitle ||
-        previewProject?.title ||
-        category.shortLabel ||
-        fallbackCategory?.shortLabel ||
-        category.title,
+      icon: portfolioCategoryIcons[slug] ?? "website",
     };
   });
 }
 
-export function getPortfolioProjects(locale: LocaleCode) {
-  const dictionary = portfolioContent[locale] ?? portfolioContent.az;
-
-  if (dictionary.projects.length) {
-    return dictionary.projects;
-  }
-
-  return portfolioContent.az.projects;
+export function getPortfolioProjects(_locale: LocaleCode) {
+  return fallbackPortfolioProjects;
 }
 
 export function getPortfolioCategory(
@@ -522,28 +512,26 @@ export function getPortfolioCategory(
   slug: PortfolioCategorySlug,
   categories?: PortfolioCategoryContent[]
 ) {
-  const dictionary = portfolioContent[locale] ?? portfolioContent.az;
-  const fallbackCategory = dictionary.categories[slug];
-  const category = getCategoryContent(locale, categories).find(
-    (item) => item.slug === slug
-  ) ?? {
-    slug,
-    title: fallbackCategory?.title ?? slug,
-    description: fallbackCategory?.description ?? "",
-    shortLabel: fallbackCategory?.shortLabel ?? slug,
-  };
+  const normalizedSlug = normalizePortfolioCategorySlug(slug);
+  const category =
+    dedupeCategoryContent(locale, categories).find(
+      (item) => normalizePortfolioCategorySlug(item.slug) === normalizedSlug
+    ) ?? {
+      slug: normalizedSlug,
+      ...getCategoryFallback(locale, normalizedSlug),
+    };
 
   return {
-    slug,
-    eyebrow: dictionary.eyebrow,
+    slug: getPortfolioRouteSlug(normalizedSlug),
+    eyebrow: getDictionary(locale).eyebrow,
     title: category.title,
     description: category.description,
-    shortLabel: category.shortLabel || fallbackCategory?.shortLabel || category.title,
+    shortLabel: category.shortLabel || category.title,
   };
 }
 
 export function getPortfolioPageCopy(locale: LocaleCode) {
-  const dictionary = portfolioContent[locale] ?? portfolioContent.az;
+  const dictionary = getDictionary(locale);
 
   return {
     eyebrow: dictionary.eyebrow,

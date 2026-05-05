@@ -10,6 +10,10 @@ import {
   fallbackPortfolioProjects,
   getPortfolioCategory,
   getPortfolioPageCopy,
+  getPortfolioRouteSlug,
+  mergePortfolioCategories,
+  mergePortfolioProjects,
+  normalizePortfolioCategorySlug,
 } from "../../../lib/portfolio-data";
 import { localizeHref } from "../../../lib/locale";
 import { getCurrentLocale } from "../../../lib/request-locale";
@@ -19,26 +23,13 @@ import {
   getSiteContent,
 } from "../../../lib/wordpress";
 
-function buildProjectParagraphs(description: string) {
-  const trimmed = description.trim();
-
-  if (!trimmed) {
-    return [];
-  }
-
-  return [
-    trimmed,
-    `${trimmed} This project was shaped around clarity, pacing, and a cleaner browsing flow so the product story stays easy to follow.`,
-    `${trimmed} We focused on visual hierarchy, a deliberate content rhythm, and a presentation that feels polished across desktop and mobile.`,
-  ];
-}
-
 export default async function PortfolioProjectPage({
   params,
 }: {
   params: Promise<{ category: string; slug: string }>;
 }) {
   const { category, slug } = await params;
+  const normalizedCategory = normalizePortfolioCategorySlug(category);
   const locale = await getCurrentLocale();
 
   const [siteContent, cmsProjects, cmsCategories] = await Promise.all([
@@ -47,17 +38,26 @@ export default async function PortfolioProjectPage({
     getPortfolioCategoriesFromCms(locale),
   ]);
 
-  const categorySource =
-    cmsCategories.length ? cmsCategories : siteContent.portfolioCategories;
-  const categoryExists = categorySource.some((item) => item.slug === category);
+  const categorySource = mergePortfolioCategories(
+    cmsCategories,
+    siteContent.portfolioCategories
+  );
+  const categoryExists = categorySource.some(
+    (item) => normalizePortfolioCategorySlug(item.slug) === normalizedCategory
+  );
 
   if (!categoryExists) {
     notFound();
   }
 
-  const portfolioProjects = cmsProjects.length ? cmsProjects : fallbackPortfolioProjects;
+  const portfolioProjects = mergePortfolioProjects(
+    cmsProjects,
+    fallbackPortfolioProjects
+  );
   const project = portfolioProjects.find(
-    (item) => item.category === category && item.slug === slug
+    (item) =>
+      normalizePortfolioCategorySlug(item.category) === normalizedCategory &&
+      item.slug === slug
   );
 
   if (!project) {
@@ -65,8 +65,7 @@ export default async function PortfolioProjectPage({
   }
 
   const pageCopy = getPortfolioPageCopy(locale);
-  const categoryCopy = getPortfolioCategory(locale, category, categorySource);
-  const detailParagraphs = buildProjectParagraphs(project.description);
+  const categoryCopy = getPortfolioCategory(locale, normalizedCategory, categorySource);
   const galleryImages = [
     { src: project.image, alt: project.alt },
     ...(project.gallery ?? []),
@@ -80,7 +79,14 @@ export default async function PortfolioProjectPage({
         <nav className="portfolio-breadcrumb" aria-label="Breadcrumb">
           <Link href={localizeHref("/portfolio", locale)}>{pageCopy.breadcrumbRoot}</Link>
           <span aria-hidden="true">&gt;</span>
-          <Link href={localizeHref(`/portfolio/${category}`, locale)}>{categoryCopy.title}</Link>
+          <Link
+            href={localizeHref(
+              `/portfolio/${getPortfolioRouteSlug(normalizedCategory)}`,
+              locale
+            )}
+          >
+            {categoryCopy.title}
+          </Link>
           <span aria-hidden="true">&gt;</span>
           <span>{project.title}</span>
         </nav>
@@ -89,9 +95,7 @@ export default async function PortfolioProjectPage({
           <span className="eyebrow">{project.badge}</span>
           <h1>{project.title}</h1>
           <div className="portfolio-project-hero__copy">
-            {detailParagraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+            <p>{project.description}</p>
           </div>
         </div>
 
