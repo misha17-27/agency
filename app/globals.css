@@ -2783,22 +2783,22 @@ html[data-theme="dark"] .about-metrics {
 
 .portfolio-project-hero h1 {
   margin: 0;
-  font-size: clamp(3rem, 7vw, 5rem);
-  letter-spacing: -0.06em;
-  line-height: 0.95;
+  font-size: clamp(3rem, 4.2vw, 3.5rem);
+  letter-spacing: -0.055em;
+  line-height: 1.1;
 }
 
 .portfolio-project-hero__copy {
   display: grid;
   gap: 0.75rem;
-  max-width: 58rem;
+  max-width: 40rem;
 }
 
 .portfolio-project-hero__copy p {
   margin: 0;
   color: var(--muted);
-  font-size: 1.02rem;
-  line-height: 1.8;
+  font-size: 1.125rem;
+  line-height: 1.625;
 }
 
 .portfolio-project-gallery {
@@ -2826,7 +2826,7 @@ html[data-theme="dark"] .about-metrics {
 }
 
 .portfolio-project-gallery__thumb {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 1 / 1;
 }
 
 .portfolio-project-gallery__main img,
@@ -3618,8 +3618,16 @@ html[data-theme="dark"] .office-map-link {
     font-size: clamp(2rem, 9vw, 2.7rem);
   }
 
+  .portfolio-project-hero {
+    gap: 0.7rem;
+  }
+
+  .portfolio-project-hero__copy {
+    max-width: 100%;
+  }
+
   .portfolio-project-gallery__thumbs {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 0.75rem;
   }
 
@@ -3876,9 +3884,13 @@ html[data-theme="dark"] .office-map-link {
   }
 
   .portfolio-hub__intro p,
-  .portfolio-category-heading__copy p,
+  .portfolio-category-heading__copy p {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
   .portfolio-project-hero p {
-    font-size: 0.98rem;
-    line-height: 1.6;
+    font-size: 1.125rem;
+    line-height: 1.625;
   }
 }

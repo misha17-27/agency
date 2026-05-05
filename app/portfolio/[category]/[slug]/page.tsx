@@ -66,10 +66,10 @@ export default async function PortfolioProjectPage({
 
   const pageCopy = getPortfolioPageCopy(locale);
   const categoryCopy = getPortfolioCategory(locale, normalizedCategory, categorySource);
-  const galleryImages = [
-    { src: project.image, alt: project.alt },
-    ...(project.gallery ?? []),
-  ];
+  const detailImages =
+    project.gallery && project.gallery.length
+      ? project.gallery
+      : [{ src: project.image, alt: project.alt }];
 
   return (
     <main className="page-shell">
@@ -102,8 +102,8 @@ export default async function PortfolioProjectPage({
         <div className="portfolio-project-gallery">
           <div className="portfolio-project-gallery__main">
             <Image
-              src={galleryImages[0].src}
-              alt={galleryImages[0].alt}
+              src={detailImages[0].src}
+              alt={detailImages[0].alt}
               width={1440}
               height={940}
               sizes="(max-width: 760px) 100vw, 100vw"
@@ -111,9 +111,9 @@ export default async function PortfolioProjectPage({
             />
           </div>
 
-          {galleryImages.length > 1 ? (
+          {detailImages.length > 1 ? (
             <div className="portfolio-project-gallery__thumbs">
-              {galleryImages.slice(1).map((image, index) => (
+              {detailImages.slice(1).map((image, index) => (
                 <div className="portfolio-project-gallery__thumb" key={`${image.alt}-${index}`}>
                   <Image
                     src={image.src}
